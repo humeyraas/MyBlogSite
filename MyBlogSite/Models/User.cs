@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace MyBlogSite.Models
 {
-    public class User
+    public class User 
+
     {
         public int Id { get; set; }
 

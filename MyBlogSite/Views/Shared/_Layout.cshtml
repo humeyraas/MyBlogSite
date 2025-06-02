@@ -16,14 +16,56 @@
 
 <body>
     <!-- Senin tasarımın bu kısma dahil olacak -->
+    <!-- ORTAK NAVBAR / TOPBAR -->
+    <div class="topbar">
+        <div class="wrapper target">
+            <div class="left">
+                <i class="fa-brands fa-square-x-twitter"></i>
+                <i class="fa-brands fa-square-instagram"></i>
+                <i class="fa-brands fa-square-facebook"></i>
+                <i class="fa-brands fa-square-pinterest"></i>
+            </div>
+            <div class="center">
+                <a asp-controller="Home" asp-action="Index">HOME</a>
+                <a asp-controller="Home" asp-action="About">ABOUT</a>
+
+                @if (Context.Session.GetString("role") == "Admin")
+                {
+                    <a asp-controller="Blog" asp-action="Add">ADD</a>
+                }
+
+                @if (Context.Session.GetString("username") != null)
+                {
+                    <a asp-controller="Auth" asp-action="Logout">LOGOUT</a>
+                }
+                else
+                {
+                    <a asp-controller="Auth" asp-action="Register">REGISTER</a>
+                    <a asp-controller="Auth" asp-action="Login">LOGIN</a>
+                }
+            </div>
+            <div class="right">
+                <span>
+                    <img src="~/img/user/user-1.png" alt="user">
+                </span>
+                <div class="searchEngine" id="searchEngine">
+                    <input type="text" placeholder="...">
+                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SAYFA ÖZEL İÇERİK -->
     @RenderBody()
 
-    <!-- JS dosyaların -->
+    <!-- JS dosyaları -->
     <script src="~/js/search.js"></script>
     <script src="~/js/scroll.js"></script>
     <script src="~/js/menuToggle.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 
 </html>
