@@ -2,132 +2,207 @@
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/index.css">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-      crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        .menu-button {
+            position: fixed;
+            top: 30px;
+            left: 20px;
+            z-index: 1001;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+            background-color: #001f3f;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .category-menu {
+            position: fixed;
+            top: 80px;
+            left: -240px;
+            width: 240px;
+            height: calc(100% - 80px);
+            background-color: #001f3f;
+            padding: 20px;
+            transition: left 0.4s ease;
+            z-index: 1000;
+            font-family: 'Patrick Hand', cursive;
+            color: white;
+        }
+
+            .category-menu.active {
+                left: 0;
+            }
+
+            .category-menu h3 {
+                margin-top: 0;
+                margin-bottom: 20px;
+                font-size: 22px;
+                font-weight: bold;
+                color: white;
+            }
+
+            .category-menu ul {
+                list-style: none;
+                padding: 0;
+            }
+
+                .category-menu ul li {
+                    padding: 10px 0;
+                    cursor: pointer;
+                    color: white;
+                    font-size: 18px;
+                    transition: all 0.3s ease;
+                    border-bottom: 1px solid #ffffff55;
+                }
+
+                    .category-menu ul li:hover {
+                        color: #e754d2;
+                        transform: translateX(8px);
+                    }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .posts .post {
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
 
+    <!-- Menü Butonu -->
+    <div class="menu-button" title="Kategoriler" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
 
-   
+    <!-- Menü Paneli -->
+    <div class="category-menu" id="categoryMenu">
+        <h3>Kategoriler</h3>
+        <ul>
+            <li onclick="filterCategory('Hepsi')">Hepsi</li>
+            <li onclick="filterCategory('Macera')">Macera</li>
+            <li onclick="filterCategory('Seyahat')">Seyahat</li>
+            <li onclick="filterCategory('Film')">Film</li>
+            <li onclick="filterCategory('Günlük')">Günlük</li>
+            <li onclick="filterCategory('Teknoloji')">Teknoloji</li>
+            <li onclick="filterCategory('Müzik')">Müzik</li>
+            <li onclick="filterCategory('Kitap')">Kitap</li>
+            <li onclick="filterCategory('Yemek')">Yemek</li>
+            <li onclick="filterCategory('Kişisel Gelişim')">Kişisel Gelişim</li>
+        </ul>
+    </div>
 
+    <!-- Header -->
+    <header class="header target">
+        <img src="/img/background/home.jpg" alt="background">
+        <h1>My Blog</h1>
+        <h3>It's a Dream</h3>
+    </header>
 
-
-   <header class="header target">
-        <img src="~/img/background/home.jpg" alt="background">
-      <h1>My Blog</h1>
-      <h3>It's a Dream</h3>
-   </header>
-
-
-   <div class="home">
-      <div class="wrapper">
-         <div class="posts">
-
-            <div class="post target">
-               <h1>Title</h1>
-                    <img src="~/img/background/content-1.jpg" alt="content">
-               <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio saepe quis, illo obcaecati suscipit quod
-                  nulla maiores, dolore, debitis esse deleniti quisquam nisi dolorem ullam! Recusandae enim officiis
-                  nulla fuga!
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque alias harum aspernatur veniam
-                  libero possimus a aut ea necessitatibus ipsum, blanditiis illo tempora nulla perferendis, magni enim
-                  consequatur ut earum?
-               </p>
-               <div class="authorAndDate">
-                  <span>Muhammet Çelik</span>
-                  <span>04.01.2024</span>
-               </div>
+    <!-- Ana İçerik -->
+    <div class="home">
+        <div class="wrapper">
+            <div class="posts">
+                <div class="post target" data-category="Macera">
+                    <h1>Macera Ruhu</h1>
+                    <img src="/img/background/content-1.jpg" alt="content">
+                    <p>Macera dolu anılarla dolu bir gün geçirdik...</p>
+                    <div class="authorAndDate">
+                        <span>Muhammet Çelik</span>
+                        <span>04.01.2024</span>
+                    </div>
+                </div>
+                <div class="post target" data-category="Film">
+                    <h1>Sinema Dünyası</h1>
+                    <img src="/img/background/content-1.jpg" alt="content">
+                    <p>Film incelemeleri ve dizi tavsiyeleri burada...</p>
+                    <div class="authorAndDate">
+                        <span>Muhammet Çelik</span>
+                        <span>04.01.2024</span>
+                    </div>
+                </div>
+                <div class="post target" data-category="Seyahat">
+                    <h1>Roma Seyahati</h1>
+                    <img src="/img/background/content-1.jpg" alt="content">
+                    <p>İtalya'nın sokaklarında dolaştık...</p>
+                    <div class="authorAndDate">
+                        <span>Muhammet Çelik</span>
+                        <span>04.01.2024</span>
+                    </div>
+                </div>
+                <div class="post target" data-category="Teknoloji">
+                    <h1>Yapay Zeka Devri</h1>
+                    <img src="/img/background/content-1.jpg" alt="content">
+                    <p>Yapay zekanın geleceği üzerine notlar...</p>
+                    <div class="authorAndDate">
+                        <span>Muhammet Çelik</span>
+                        <span>04.01.2024</span>
+                    </div>
+                </div>
+                <div class="post target" data-category="Günlük">
+                    <h1>Günlük Yaşamdan Kesitler</h1>
+                    <img src="/img/background/content-1.jpg" alt="content">
+                    <p>Bugün kahvemi içtim ve yazıya başladım...</p>
+                    <div class="authorAndDate">
+                        <span>Muhammet Çelik</span>
+                        <span>04.01.2024</span>
+                    </div>
+                </div>
             </div>
 
-
-            <div class="post target">
-               <h1>Title</h1>
-                    <img src="~/img/background/content-1.jpg" alt="content">
-               <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio saepe quis, illo obcaecati suscipit quod
-                  nulla maiores, dolore, debitis esse deleniti quisquam nisi dolorem ullam! Recusandae enim officiis
-                  nulla fuga!
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque alias harum aspernatur veniam
-                  libero possimus a aut ea necessitatibus ipsum, blanditiis illo tempora nulla perferendis, magni enim
-                  consequatur ut earum?
-               </p>
-               <div class="authorAndDate">
-                  <span>Muhammet Çelik</span>
-                  <span>04.01.2024</span>
-               </div>
+            <div class="sidebar">
+                <div class="area target">
+                    <h3>Who I Am</h3>
+                    <img src="/img/user/user-2.png" alt="user">
+                    <div class="categories">
+                        <span>#art</span>
+                        <span>#design</span>
+                        <span>#paint</span>
+                        <span>#culture</span>
+                    </div>
+                </div>
+                <div class="area target">
+                    <h3>Your Space</h3>
+                    <a href="/admin/add">Add Post</a>
+                    <a href="#">Your Performance</a>
+                    <a href="#">Number of Views</a>
+                </div>
             </div>
+        </div>
+    </div>
 
+    <script>
+        function toggleMenu() {
+           const menu = document.getElementById('categoryMenu');
+           menu.classList.toggle('active');
+        }
 
-            <div class="post target">
-               <h1>Title</h1>
-                    <img src="~/img/background/content-1.jpg" alt="content">
-               <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio saepe quis, illo obcaecati suscipit quod
-                  nulla maiores, dolore, debitis esse deleniti quisquam nisi dolorem ullam! Recusandae enim officiis
-                  nulla fuga!
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque alias harum aspernatur veniam
-                  libero possimus a aut ea necessitatibus ipsum, blanditiis illo tempora nulla perferendis, magni enim
-                  consequatur ut earum?
-               </p>
-               <div class="authorAndDate">
-                  <span>Muhammet Çelik</span>
-                  <span>04.01.2024</span>
-               </div>
-            </div>
-
-            <div class="post target">
-               <h1>Title</h1>
-                    <img src="~/img/background/content-1.jpg" alt="content">
-               <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio saepe quis, illo obcaecati suscipit quod
-                  nulla maiores, dolore, debitis esse deleniti quisquam nisi dolorem ullam! Recusandae enim officiis
-                  nulla fuga!
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque alias harum aspernatur veniam
-                  libero possimus a aut ea necessitatibus ipsum, blanditiis illo tempora nulla perferendis, magni enim
-                  consequatur ut earum?
-               </p>
-               <div class="authorAndDate">
-                  <span>Muhammet Çelik</span>
-                  <span>04.01.2024</span>
-               </div>
-            </div>
-
-
-         </div>
-
-         <div class="sidebar">
-            <div class="area target">
-               <h3>Who I Am</h3>
-                    <img src="~/img/user/user-2.png" alt="user">
-               <div class="categories">
-                  <span>#art</span>
-                  <span>#design</span>
-                  <span>#paint</span>
-                  <span>#culture</span>
-               </div>
-            </div>
-
-            <div class="area target">
-               <h3>Your Space</h3>
-               <a href="/admin/add">Add Post</a>
-               <a href="#">Your Perfonce</a>
-               <a href="#">Number of Views</a>
-            </div>
-         </div>
-      </div>
-   </div>
-
-
-    <script src="~/js/search.js"></script>
-    <script src="~/js/scroll.js"></script>
-    <script src="~/js/menuToggle.js"></script>
+        function filterCategory(category) {
+           const posts = document.querySelectorAll('.post');
+           posts.forEach(post => {
+              const postCategory = post.getAttribute('data-category');
+              if (category === 'Hepsi' || postCategory === category) {
+                 post.classList.remove('hidden');
+              } else {
+                 post.classList.add('hidden');
+              }
+           });
+        }
+    </script>
+    <script src="/js/search.js"></script>
+    <script src="/js/scroll.js"></script>
 </body>
 
 </html>
