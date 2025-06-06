@@ -20,17 +20,17 @@
         <form asp-action="Login" method="post">
             <div class="formGroup">
                 <input type="text" name="Username" required />
-                <span>Username *</span>
+                <span>Kullanıcı Adı *</span>
             </div>
 
             <div class="formGroup">
                 <input type="password" name="Password" required />
-                <span>Password *</span>
+                <span>Şifre *</span>
             </div>
 
             <div class="btnGroup">
-                <a asp-controller="Auth" asp-action="Register">Don't have an account?</a>
-                <button type="submit">Login</button>
+                <a asp-controller="Auth" asp-action="Register">Hesabın Yok Mu? Kaydol</a>
+                <button type="submit">Giriş Yap</button>
             </div>
         </form>
     </div>

@@ -8,11 +8,11 @@
 <div class="add">
     <form asp-action="Add" asp-controller="Blog" method="post" enctype="multipart/form-data">
         <div class="text">
-            <input asp-for="Title" placeholder="Your Title *" required />
-            <textarea asp-for="Content" placeholder="Your Content *" required></textarea>
+            <input asp-for="Title" placeholder="Başlık *" required />
+            <textarea asp-for="Content" placeholder="İçerik *" required></textarea>
             
             <select asp-for="CategoryId" asp-items="ViewBag.Categories" required>
-                <option value="">Select a Category</option>
+                <option value="">Kategori Seçin</option>
             </select>
         </div>
 
