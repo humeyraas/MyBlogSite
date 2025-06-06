@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model List<MyBlogSite.Models.Blog>
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,6 +14,8 @@
 </head>
 
 <body>
+    
+    
 
 
    
@@ -25,109 +29,43 @@
    </header>
 
 
-   <div class="home">
-      <div class="wrapper">
-         <div class="posts">
-
-            <div class="post target">
-               <h1>Title</h1>
-                    <img src="~/img/background/content-1.jpg" alt="content">
-               <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio saepe quis, illo obcaecati suscipit quod
-                  nulla maiores, dolore, debitis esse deleniti quisquam nisi dolorem ullam! Recusandae enim officiis
-                  nulla fuga!
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque alias harum aspernatur veniam
-                  libero possimus a aut ea necessitatibus ipsum, blanditiis illo tempora nulla perferendis, magni enim
-                  consequatur ut earum?
-               </p>
-               <div class="authorAndDate">
-                  <span>Muhammet Çelik</span>
-                  <span>04.01.2024</span>
-               </div>
+    <div class="home">
+        <div class="wrapper">
+            <div class="posts">
+                @foreach (var blog in Model)
+                {
+                    <div class="post target" onclick="location.href='@Url.Action("Detail", "Blog", new { id = blog.Id })'" style="cursor:pointer;">
+                        <h1>@blog.Title</h1>
+                        <img src="@blog.ImageUrl" alt="@blog.Title" />
+                        <p>
+                            @if (!string.IsNullOrEmpty(blog.Content) && blog.Content.Length > 100)
+                            {
+                                @Html.Raw(blog.Content.Substring(0, 100) + "...")
+                            }
+                            else
+                            {
+                                @Html.Raw(blog.Content)
+                            }
+                        </p>
+                        <div class="authorAndDate">
+                            <span>@blog.User?.Username</span>
+                            <span>@blog.CreatedAt.ToShortDateString()</span>
+                        </div>
+                    </div>
+                }
             </div>
 
-
-            <div class="post target">
-               <h1>Title</h1>
-                    <img src="~/img/background/content-1.jpg" alt="content">
-               <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio saepe quis, illo obcaecati suscipit quod
-                  nulla maiores, dolore, debitis esse deleniti quisquam nisi dolorem ullam! Recusandae enim officiis
-                  nulla fuga!
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque alias harum aspernatur veniam
-                  libero possimus a aut ea necessitatibus ipsum, blanditiis illo tempora nulla perferendis, magni enim
-                  consequatur ut earum?
-               </p>
-               <div class="authorAndDate">
-                  <span>Muhammet Çelik</span>
-                  <span>04.01.2024</span>
-               </div>
+            <div class="sidebar">
+                <!-- Kategoriler, filtreler vb. buraya -->
             </div>
+        </div>
+    </div>
 
-
-            <div class="post target">
-               <h1>Title</h1>
-                    <img src="~/img/background/content-1.jpg" alt="content">
-               <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio saepe quis, illo obcaecati suscipit quod
-                  nulla maiores, dolore, debitis esse deleniti quisquam nisi dolorem ullam! Recusandae enim officiis
-                  nulla fuga!
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque alias harum aspernatur veniam
-                  libero possimus a aut ea necessitatibus ipsum, blanditiis illo tempora nulla perferendis, magni enim
-                  consequatur ut earum?
-               </p>
-               <div class="authorAndDate">
-                  <span>Muhammet Çelik</span>
-                  <span>04.01.2024</span>
-               </div>
-            </div>
-
-            <div class="post target">
-               <h1>Title</h1>
-                    <img src="~/img/background/content-1.jpg" alt="content">
-               <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio saepe quis, illo obcaecati suscipit quod
-                  nulla maiores, dolore, debitis esse deleniti quisquam nisi dolorem ullam! Recusandae enim officiis
-                  nulla fuga!
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque alias harum aspernatur veniam
-                  libero possimus a aut ea necessitatibus ipsum, blanditiis illo tempora nulla perferendis, magni enim
-                  consequatur ut earum?
-               </p>
-               <div class="authorAndDate">
-                  <span>Muhammet Çelik</span>
-                  <span>04.01.2024</span>
-               </div>
-            </div>
-
-
-         </div>
-
-         <div class="sidebar">
-            <div class="area target">
-               <h3>Who I Am</h3>
-                    <img src="~/img/user/user-2.png" alt="user">
-               <div class="categories">
-                  <span>#art</span>
-                  <span>#design</span>
-                  <span>#paint</span>
-                  <span>#culture</span>
-               </div>
-            </div>
-
-            <div class="area target">
-               <h3>Your Space</h3>
-               <a href="/admin/add">Add Post</a>
-               <a href="#">Your Perfonce</a>
-               <a href="#">Number of Views</a>
-            </div>
-         </div>
-      </div>
-   </div>
 
 
     <script src="~/js/search.js"></script>
     <script src="~/js/scroll.js"></script>
     <script src="~/js/menuToggle.js"></script>
+    
 </body>
-
 </html>

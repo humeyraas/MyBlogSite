@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MyBlogSite.Data;
 using MyBlogSite.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace MyBlogSite.Controllers
@@ -25,6 +26,20 @@ namespace MyBlogSite.Controllers
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
             return View();
         }
+
+        public IActionResult Detail(int id)
+        {
+            var blog = _context.Blogs
+                .Include(b => b.User) 
+                .Include(b => b.Category) 
+                .FirstOrDefault(b => b.Id == id);
+
+            if (blog == null)
+                return NotFound();
+
+            return View(blog);
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
