@@ -17,7 +17,7 @@ namespace MyBlogSite.Controllers
         {
             _context = context;
             _env = env;
-            ViewBag.Categories = _context.Categories.ToList();
+            
 
         }
 
@@ -25,13 +25,14 @@ namespace MyBlogSite.Controllers
         public IActionResult Add()
         {
             var categories = _context.Categories.ToList();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
+            ViewBag.Categories = categories; // Menü bar için
+            ViewBag.CategorySelectList = new SelectList(categories, "Id", "Name"); // Dropdown için
             return View();
         }
 
         public IActionResult Detail(int id)
         {
-            ViewBag.Categories = _context.Categories.ToList();
+            
 
             var blog = _context.Blogs
                 .Include(b => b.User) 
@@ -42,6 +43,8 @@ namespace MyBlogSite.Controllers
                 return NotFound();
             var categories = _context.Categories.ToList();
             ViewBag.Categories = categories;
+            
+            ViewBag.CategorySelectList = new SelectList(categories, "Id", "Name");
             return View(blog);
         }
 

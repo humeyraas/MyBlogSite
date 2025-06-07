@@ -11,7 +11,7 @@
             <input asp-for="Title" placeholder="Your Title *" required />
             <textarea asp-for="Content" placeholder="Your Content *" required></textarea>
             
-            <select asp-for="CategoryId" asp-items="ViewBag.Categories" required>
+            <select asp-for="CategoryId" asp-items="ViewBag.CategorySelectList" required>
                 <option value="">Select a Category</option>
             </select>
         </div>
