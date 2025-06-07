@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,17 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
 
-    <!-- Senin CSS dosyaların -->
+    <!-- Tüm CSS dosyalarını birleştirdik -->
     <link rel="stylesheet" href="~/css/index.css" />
-    
-
+    <link rel="stylesheet" href="~/css/menu.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-   
     <!-- ORTAK NAVBAR / TOPBAR -->
     <div class="topbar">
         <div class="wrapper target">
@@ -58,19 +55,39 @@
         </div>
     </div>
 
+    <!-- Menü Butonu -->
+    <div class="menu-button" title="Kategoriler" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Menü Paneli -->
+    <div class="category-menu" id="categoryMenu">
+        <h3>Kategoriler</h3>
+        <ul>
+            <li onclick="filterCategory('Hepsi')">Hepsi</li>
+            <li onclick="filterCategory('Macera')">Macera</li>
+            <li onclick="filterCategory('Magazin')">Magazin</li>
+            <li onclick="filterCategory('Seyahat')">Seyahat</li>
+            <li onclick="filterCategory('Film')">Film</li>
+            <li onclick="filterCategory('Günlük')">Günlük</li>
+            <li onclick="filterCategory('Teknoloji')">Teknoloji</li>
+            <li onclick="filterCategory('Müzik')">Müzik</li>
+            <li onclick="filterCategory('Kitap')">Kitap</li>
+            <li onclick="filterCategory('Yemek')">Yemek</li>
+            <li onclick="filterCategory('Kişisel Gelişim')">Kişisel Gelişim</li>
+        </ul>
+    </div>
+
     <!-- SAYFA ÖZEL İÇERİK -->
     @RenderBody()
 
-    <!-- JS dosyaları -->
+    <!-- Tüm JS dosyalarını birleştirdik -->
     <script src="~/js/search.js"></script>
     <script src="~/js/scroll.js"></script>
-    
-
-    <script src="~/js/menuToggle.js"></script> 
-
+    <script src="~/js/menu.js"></script>
+    <script src="~/js/menuToggle.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
-
 </body>
 
 </html>
