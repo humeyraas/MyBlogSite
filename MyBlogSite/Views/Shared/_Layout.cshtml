@@ -70,10 +70,15 @@
             </div>
 
             <div class="center">
-                <a asp-controller="Home" asp-action="Index">KEŞFET</a>
-                <a href="#">KATEGORİLER</a>
+                <a asp-controller="Home" asp-action="Index">ANA SAYFA</a>
                 <a asp-controller="Home" asp-action="About">HAKKIMIZDA</a>
 
+                <!-- her kullanıcı blog ekleyebilir -->
+
+                @if (Context.Session.GetInt32("userId") != null)
+                {
+                    <a asp-controller="Blog" asp-action="Add">BLOG EKLE</a>
+                }
 
 
             </div>
