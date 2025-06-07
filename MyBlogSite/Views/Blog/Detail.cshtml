@@ -1,5 +1,9 @@
 ﻿@model MyBlogSite.Models.Blog
 
+@{
+    int currentUserId = ViewBag.CurrentUserId ?? 0;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,22 +16,99 @@
     <title>Detail</title>
 </head>
 <body>
-<div class="detail">
-    <div class="detail-header" style="background-image: url('@Model.ImageUrl');">
-        <div class="overlay"></div>
-        <div class="detail-header-content">
-            <h1>@Model.Title</h1>
-            <h3>@Model.Category?.Name</h3>
-            <p class="authorAndDate">
-                <span>@Model.User?.Username</span>
-                <span>@Model.CreatedAt.ToString("dd MMM yyyy")</span>
-            </p>
+    <div class="detail">
+        <div class="detail-header" style="background-image: url('@Model.ImageUrl');">
+            <div class="overlay"></div>
+            <div class="detail-header-content">
+                <h1>@Model.Title</h1>
+                <h3>@Model.Category?.Name</h3>
+                <p class="authorAndDate">
+                    <span>@Model.User?.Username</span>
+                    <span>@Model.CreatedAt.ToString("dd MMM yyyy")</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="detail-body">
+            
+            @Html.Raw(Model.Content)
+
+            
+            <div class="interaction-bar" style="margin: 30px 0; display: flex; gap: 20px; font-family: 'Ubuntu Mono', monospace; color: gray;">
+                <span><i class="fa-regular fa-comment"></i> @Model.Comments?.Count() yorum</span>
+                <span><i class="fa-regular fa-eye"></i> @Model.Views görüntüleme</span>
+
+                <span id="like-button" style="cursor: pointer;" onclick="toggleLike(@Model.Id)">
+                    <i id="heart-icon" class="@(Model.LikesList.Any(l => l.UserId == currentUserId) ? "fa-solid" : "fa-regular") fa-heart"></i>
+                    
+                    <span id="like-count">@ViewBag.LikeCount Beğeni</span>
+
+                </span>
+                
+            </div>
+
+            <div class="comment-section" style="margin-top: 40px;">
+                <h3>Yorumlar</h3>
+
+                @if (Model.Comments != null && Model.Comments.Any())
+                {
+                    <ul style="list-style: none; padding: 0;">
+                        @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+                        {
+                            <li class="comment-item">
+                                <div class="comment-header">
+                                    <div class="comment-user-info">
+                                        <strong>@comment.User?.Username</strong>
+                                        <small>@comment.CreatedAt.ToShortDateString()</small>
+                                    </div>
+                                    @if (ViewBag.CurrentUserId != null && comment.UserId == (int)ViewBag.CurrentUserId)
+                                    {
+                                        <form asp-action="DeleteComment" asp-controller="Blog" asp-route-id="@comment.Id"
+                                              method="post" class="delete-comment-form"
+                                              onsubmit="return confirm('Yorumu silmek istediğinizden emin misiniz?');">
+                                            <button type="submit" class="delete-comment-btn" title="Yorumu Sil">
+                                                <i class="fa-regular fa-trash-can"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                                <p class="comment-content">@comment.Content</p>
+                            </li>
+                        }
+                    </ul>
+
+
+                }
+                else
+                {
+                    <p>Henüz yorum yapılmamış.</p>
+                }
+            </div>
+
+
+                <!-- Yorum formu -->
+            <div class="comment-form-container">
+                <h4>Yorum Yap</h4>
+                @if (Context.Session.GetInt32("userId") != null)
+                {
+                    <form asp-action="AddComment" asp-controller="Blog" method="post" class="comment-form">
+                        <input type="hidden" name="blogId" value="@Model.Id" />
+                        <textarea name="content" required placeholder="Yorumunuzu yazın..." class="comment-input"></textarea>
+                        <button type="submit" class="comment-submit">Yorumu Gönder</button>
+                    </form>
+                }
+                else
+                {
+                    <p>Yorum yapabilmek için <a href="/Auth/Login">giriş yapmalısınız</a>.</p>
+                }
+            </div>
+
+
+            <!-- Geri dön butonu -->
+            <div style="margin-top: 40px;">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-danger btn-sm"><i class="fa-solid fa-arrow-left"></i> Tüm yazılara dön</a>
+            </div>
         </div>
     </div>
-
-    <div class="detail-body">
-        @Html.Raw(Model.Content)
-    </div>
-</div>
 </body>
 </html>

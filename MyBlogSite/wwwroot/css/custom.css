@@ -74,3 +74,222 @@
         padding: 20px;
     }
 }
+.comment-list {
+    list-style: none;
+    padding: 0;
+}
+
+    .comment-list li {
+        border-bottom: 1px solid #ccc;
+        padding: 10px 0;
+    }
+
+        .comment-list li strong {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+        }
+
+.interaction-bar {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    font-family: 'Ubuntu Mono', monospace;
+    color: gray;
+}
+/* Yorum yazma kutusu */
+.comment-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease;
+}
+
+    .comment-form textarea:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+/* Yorum gönderme butonu */
+.comment-form button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+    .comment-form button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+/* Sil butonu (yorum sil) */
+.btn-danger.btn-sm {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-danger.btn-sm:hover {
+        background-color: #b02a37;
+    }
+.comment-item {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    position: relative;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-content {
+    margin: 8px 0;
+}
+
+.delete-comment-form {
+    display: inline;
+    margin-left: 10px;
+}
+
+.delete-comment-btn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.2s ease;
+}
+
+    .delete-comment-btn:hover {
+        color: #e74c3c;
+    }
+
+.comment-form textarea.comment-input {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    font-family: inherit;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.comment-submit {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+    .comment-submit:hover {
+        background-color: #45a049;
+    }
+<style >
+.comment-item {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+    position: relative;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.comment-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+    .comment-user-info strong {
+        font-size: 16px;
+    }
+
+    .comment-user-info small {
+        font-size: 12px;
+        color: gray;
+        margin-top: 2px;
+    }
+
+.delete-comment-form {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.delete-comment-btn {
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+    .delete-comment-btn:hover {
+        color: #e74c3c;
+    }
+
+.comment-content {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Yorum formu */
+.comment-form-container {
+    margin-top: 40px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.comment-form textarea.comment-input {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    margin-bottom: 10px;
+    font-family: inherit;
+}
+
+.comment-submit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    .comment-submit:hover {
+        background-color: #0056b3;
+    }
+
+</style >

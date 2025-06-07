@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyBlogSite.Data;
 
@@ -11,9 +12,11 @@ using MyBlogSite.Data;
 namespace MyBlogSite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250607125133_AddBlogLike")]
+    partial class AddBlogLike
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,6 +46,9 @@ namespace MyBlogSite.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -60,34 +66,6 @@ namespace MyBlogSite.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Blogs");
-                });
-
-            modelBuilder.Entity("MyBlogSite.Models.BlogLike", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BlogId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BlogId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlogId");
-
-                    b.HasIndex("BlogId1");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("BlogLikes");
                 });
 
             modelBuilder.Entity("MyBlogSite.Models.Category", b =>
@@ -186,29 +164,6 @@ namespace MyBlogSite.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MyBlogSite.Models.BlogLike", b =>
-                {
-                    b.HasOne("MyBlogSite.Models.Blog", "Blog")
-                        .WithMany()
-                        .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyBlogSite.Models.Blog", null)
-                        .WithMany("LikesList")
-                        .HasForeignKey("BlogId1");
-
-                    b.HasOne("MyBlogSite.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Blog");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("MyBlogSite.Models.Comment", b =>
                 {
                     b.HasOne("MyBlogSite.Models.Blog", "Blog")
@@ -235,8 +190,6 @@ namespace MyBlogSite.Migrations
             modelBuilder.Entity("MyBlogSite.Models.Blog", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("LikesList");
                 });
 
             modelBuilder.Entity("MyBlogSite.Models.Category", b =>
