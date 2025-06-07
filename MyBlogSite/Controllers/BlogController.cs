@@ -17,6 +17,8 @@ namespace MyBlogSite.Controllers
         {
             _context = context;
             _env = env;
+            ViewBag.Categories = _context.Categories.ToList();
+
         }
 
         [HttpGet]
@@ -29,6 +31,8 @@ namespace MyBlogSite.Controllers
 
         public IActionResult Detail(int id)
         {
+            ViewBag.Categories = _context.Categories.ToList();
+
             var blog = _context.Blogs
                 .Include(b => b.User) 
                 .Include(b => b.Category) 
@@ -36,7 +40,8 @@ namespace MyBlogSite.Controllers
 
             if (blog == null)
                 return NotFound();
-
+            var categories = _context.Categories.ToList();
+            ViewBag.Categories = categories;
             return View(blog);
         }
 
@@ -78,6 +83,8 @@ namespace MyBlogSite.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
+            ViewBag.Categories = _context.Categories.ToList();
+
         }
     }
 }

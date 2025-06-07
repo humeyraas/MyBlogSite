@@ -15,6 +15,8 @@ namespace MyBlogSite.Controllers
         public HomeController(ApplicationDbContext context)
         {
             _context = context;
+            ViewBag.Categories = _context.Categories.ToList();
+
         }
 
         public IActionResult Index()
@@ -24,22 +26,31 @@ namespace MyBlogSite.Controllers
                 .Include(b => b.Category)
                 .OrderByDescending(b => b.CreatedAt)
                 .ToList();
-
+            ViewBag.Categories = _context.Categories.ToList();
             return View(blogs);
         }
 
         public IActionResult Privacy()
         {
+            ViewBag.Categories = _context.Categories.ToList();
             return View();
+            
+
         }
         public IActionResult About()
         {
-            return View(); 
+            ViewBag.Categories = _context.Categories.ToList();
+            return View();
+            
+
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            ViewBag.Categories = _context.Categories.ToList();
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
