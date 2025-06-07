@@ -27,6 +27,9 @@ namespace MyBlogSite.Models
         [ForeignKey("CategoryId")]
         public Category? Category { get; set; }
 
+        public string? Tags { get; set; }
+
+
         public ICollection<Comment>? Comments { get; set; }
     }
 }

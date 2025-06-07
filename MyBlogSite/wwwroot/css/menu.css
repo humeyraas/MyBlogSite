@@ -1,0 +1,83 @@
+﻿.menu-button {
+    position: fixed;
+    top: 30px;
+    left: 1px;
+    z-index: 1001;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+    background-color: #001f3f;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); 
+    margin-top: 67px;
+    
+}
+
+
+
+
+.category-menu {
+    position: fixed;
+    top: 80px;
+    left: -240px;
+    width: 240px;
+    height: calc(100% - 80px);
+    background-color: #001f3f;
+    padding: 20px;
+    transition: left 0.4s ease;
+    z-index: 1000;
+    font-family: 'Patrick Hand', cursive;
+    color: white;
+}
+
+    .category-menu.active {
+        left: 0;
+    }
+
+    .category-menu h3 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 22px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .category-menu ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        .category-menu ul li {
+            padding: 10px 0;
+            cursor: pointer;
+            color: white;
+            font-size: 18px !important;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #ffffff55;
+        }
+
+            .category-menu ul li:hover {
+                color: #e754d2;
+                transform: translateX(8px);
+            }
+
+.hidden {
+    display: none !important;
+}
+
+.posts .post {
+    display: block;
+}
+.category-menu ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+    .category-menu ul li a:hover {
+        color: #e754d2;
+        transform: translateX(8px);
+    }

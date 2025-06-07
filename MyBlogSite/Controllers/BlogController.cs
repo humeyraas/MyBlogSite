@@ -43,10 +43,15 @@ namespace MyBlogSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(Blog blog, IFormFile? file)
+        public async Task<IActionResult> Add(Blog blog, IFormFile? file, string? Tags)
         {
             if (!ModelState.IsValid)
+            {
+                var categories = _context.Categories.ToList();
+                ViewBag.Categories = categories;
+                ViewBag.CategorySelectList = new SelectList(categories, "Id", "Name");
                 return View(blog);
+            }
 
             if (file != null && file.Length > 0)
             {
@@ -68,16 +73,44 @@ namespace MyBlogSite.Controllers
 
             var userId = HttpContext.Session.GetInt32("userId");
             if (userId == null)
-            {
                 return RedirectToAction("Login", "Auth");
-            }
+
             blog.UserId = userId.Value;
 
+            // Tagleri ata
+            blog.Tags = Tags;
 
             _context.Blogs.Add(blog);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
         }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile upload)
+        {
+            if (upload != null && upload.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
+                Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(upload.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await upload.CopyToAsync(stream);
+                }
+
+                var imageUrl = Url.Content("~/uploads/" + fileName);
+
+                return Json(new { url = imageUrl });
+            }
+
+            return BadRequest();
+        }
+
     }
 }
