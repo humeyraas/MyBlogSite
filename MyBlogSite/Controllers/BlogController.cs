@@ -25,8 +25,8 @@ namespace MyBlogSite.Controllers
         public IActionResult Add()
         {
             var categories = _context.Categories.ToList();
-            ViewBag.Categories = categories; // Menü bar için
-            ViewBag.CategorySelectList = new SelectList(categories, "Id", "Name"); // Dropdown için
+            ViewBag.Categories = categories; 
+            ViewBag.CategorySelectList = new SelectList(categories, "Id", "Name");
             return View();
         }
 

@@ -63,16 +63,20 @@
     <div class="category-menu" id="categoryMenu">
         <h3>Kategoriler</h3>
         <ul>
-           
             @if (ViewBag.Categories != null)
             {
-                foreach (var category in ViewBag.Categories)
+                foreach (var category in ViewBag.Categories as List<MyBlogSite.Models.Category>)
                 {
-                    <li onclick="filterCategory('@category.Name')">@category.Name</li>
+                    <li>
+                        <a href="@Url.Action("Index", "Home", new { categoryId = category.Id })">
+                            @category.Name
+                        </a>
+                    </li>
                 }
             }
         </ul>
     </div>
+
 
 
     

@@ -19,16 +19,7 @@ namespace MyBlogSite.Controllers
 
         }
 
-        public IActionResult Index()
-        {
-            var blogs = _context.Blogs
-                .Include(b => b.User)
-                .Include(b => b.Category)
-                .OrderByDescending(b => b.CreatedAt)
-                .ToList();
-            ViewBag.Categories = _context.Categories.ToList();
-            return View(blogs);
-        }
+        
 
         public IActionResult Privacy()
         {
@@ -53,5 +44,23 @@ namespace MyBlogSite.Controllers
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public IActionResult Index(int? categoryId)
+        {
+            ViewBag.Categories = _context.Categories.ToList(); // Menü bar için
+
+            var blogs = _context.Blogs
+                .Include(b => b.User)
+                .Include(b => b.Category)
+                .OrderByDescending(b => b.CreatedAt)
+                .AsQueryable();
+
+            if (categoryId.HasValue)
+            {
+                blogs = blogs.Where(b => b.CategoryId == categoryId.Value);
+            }
+
+            return View(blogs.ToList());
+        }
+
     }
 }
