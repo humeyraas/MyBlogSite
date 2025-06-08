@@ -61,10 +61,15 @@ namespace MyBlogSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(Blog blog, IFormFile? file)
+        public async Task<IActionResult> Add(Blog blog, IFormFile? file, string? Tags)
         {
             if (!ModelState.IsValid)
+            {
+                var categories = _context.Categories.ToList();
+                ViewBag.Categories = categories;
+                ViewBag.CategorySelectList = new SelectList(categories, "Id", "Name");
                 return View(blog);
+            }
 
             if (file != null && file.Length > 0)
             {
@@ -85,18 +90,20 @@ namespace MyBlogSite.Controllers
             blog.CreatedAt = DateTime.Now;
 
             var userId = HttpContext.Session.GetInt32("userId");
-            if (!userId.HasValue)
-            {
+            if (userId == null)
                 return RedirectToAction("Login", "Auth");
-            }
 
             blog.UserId = userId.Value;
+
+            // Tagleri ata
+            blog.Tags = Tags;
 
             _context.Blogs.Add(blog);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
         }
+
 
         [HttpPost]
         public IActionResult AddComment(int blogId, string content)
