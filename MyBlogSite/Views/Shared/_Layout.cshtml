@@ -17,8 +17,11 @@
 <body>
    
     <div class="topbar">
+         
         <div class="wrapper target">
+
             <div class="left">
+                
                 <i class="fa-brands fa-square-x-twitter"></i>
                 <i class="fa-brands fa-square-instagram"></i>
                 <i class="fa-brands fa-square-facebook"></i>
@@ -44,6 +47,7 @@
                 }
             </div>
             <div class="right">
+                
                 <span>
                     <img src="~/img/user/user-1.png" alt="user">
                 </span>
@@ -51,6 +55,12 @@
                     <input type="text" placeholder="...">
                     <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
                 </div>
+                @if (Context.Session.GetString("username") != null)
+                {
+                    <a asp-controller="User" asp-action="Settings" title="Ayarlar" class="settings-link">
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
+                }
             </div>
         </div>
     </div>
@@ -60,22 +70,24 @@
         <i class="fas fa-bars"></i>
     </div>
 
-    <div class="category-menu" id="categoryMenu">
-        <h3>Kategoriler</h3>
-        <ul>
-            @if (ViewBag.Categories != null)
-            {
-                foreach (var category in ViewBag.Categories as List<MyBlogSite.Models.Category>)
+    
+        <div class="category-menu" id="categoryMenu">
+            <h3>Kategoriler</h3>
+            <ul>
+                @if (ViewBag.Categories != null)
                 {
-                    <li>
-                        <a href="@Url.Action("Index", "Home", new { categoryId = category.Id })">
-                            @category.Name
-                        </a>
-                    </li>
+                    foreach (var category in ViewBag.Categories as List<MyBlogSite.Models.Category>)
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", "Home", new { categoryId = category.Id })">
+                                @category.Name
+                            </a>
+                        </li>
+                    }
                 }
-            }
-        </ul>
-    </div>
+            </ul>
+        </div>
+    
 
 
 

@@ -178,3 +178,13 @@
   background-color: #f5f5f5;
   color: #000;
 }
+.settings-link {
+    color: #333;
+    margin-right: 15px;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+.settings-link:hover {
+        color: #007bff;
+    }

@@ -1,0 +1,46 @@
+﻿@model MyBlogSite.Models.User
+
+@{
+    ViewData["Title"] = "Ayarlar";
+}
+
+<link rel="stylesheet" href="~/css/settings.css" />
+<script src="~/js/settings.js" defer></script>
+
+<div class="settings-container">
+    <h2>Hesap Ayarları</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        <!-- Profil Fotoğrafı -->
+        <div class="form-group">
+            <label>Profil Fotoğrafı</label>
+            <div class="pp-preview">
+                <img id="preview" src="~/img/user/user-1.png" alt="Profil Fotoğrafı" />
+            </div>
+            <input type="file" name="ProfileImage" id="profileImageInput" accept="image/*">
+        </div>
+
+        <!-- Kullanıcı Adı -->
+        <div class="form-group">
+            <label>Kullanıcı Adı</label>
+            <input type="text" name="Username" value="@Model.Username" required />
+        </div>
+
+        <!-- Şifre -->
+        <div class="form-group">
+            <label>Yeni Şifre</label>
+            <input type="password" name="Password" placeholder="Yeni şifre girin" />
+        </div>
+
+       
+        <!-- Kaydet Butonu -->
+        <button type="submit" class="save-btn">Kaydet</button>
+    </form>
+
+    <!-- Hesap Silme -->
+    <div class="delete-account">
+        <form method="post" asp-action="DeleteAccount">
+            <button type="submit" class="delete-btn" onclick="return confirm('Hesabınızı silmek istediğinize emin misiniz?');">Hesabı Sil</button>
+        </form>
+    </div>
+</div>
