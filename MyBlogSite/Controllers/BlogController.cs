@@ -29,6 +29,7 @@ namespace MyBlogSite.Controllers
 
         public IActionResult Detail(int id)
         {
+            
             var blog = _context.Blogs
                 .Include(b => b.User)
                 .Include(b => b.Comments)
@@ -155,8 +156,9 @@ namespace MyBlogSite.Controllers
             return View(blogs);
         }
         [HttpPost]
-        public IActionResult ToggleLike([FromBody] int blogId)
+        public IActionResult ToggleLike([FromBody] dynamic data)
         {
+            int blogId = data.GetProperty("blogId").GetInt32();
             var userId = HttpContext.Session.GetInt32("userId");
 
             if (userId == null)
@@ -188,6 +190,8 @@ namespace MyBlogSite.Controllers
                 count = newLikeCount
             });
         }
+
+
 
     }
 }

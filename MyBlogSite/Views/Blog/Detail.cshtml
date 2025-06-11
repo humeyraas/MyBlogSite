@@ -1,7 +1,11 @@
-﻿@model MyBlogSite.Models.Blog
+﻿
+@model MyBlogSite.Models.Blog
 
 @{
-    int currentUserId = ViewBag.CurrentUserId ?? 0;
+    var currentUserId = ViewBag.CurrentUserId as int?;
+   
+   
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
