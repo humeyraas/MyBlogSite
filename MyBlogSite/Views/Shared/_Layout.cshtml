@@ -21,12 +21,21 @@
         <div class="wrapper target">
 
             <div class="left">
-                
-                <i class="fa-brands fa-square-x-twitter"></i>
-                <i class="fa-brands fa-square-instagram"></i>
-                <i class="fa-brands fa-square-facebook"></i>
-                <i class="fa-brands fa-square-pinterest"></i>
+                <a href="https://twitter.com" target="_blank">
+                    <i class="fa-brands fa-square-x-twitter"></i>
+                </a>
+                <a href="https://instagram.com" target="_blank">
+                    <i class="fa-brands fa-square-instagram"></i>
+                </a>
+                <a href="https://facebook.com" target="_blank">
+                    <i class="fa-brands fa-square-facebook"></i>
+                </a>
+                <a href="https://pinterest.com" target="_blank">
+                    <i class="fa-brands fa-square-pinterest"></i>
+                </a>
             </div>
+
+
             <div class="center">
                 <a asp-controller="Home" asp-action="Index">HOME</a>
                 <a asp-controller="Home" asp-action="About">ABOUT</a>
@@ -46,17 +55,24 @@
                     <a asp-controller="Auth" asp-action="Login">LOGIN</a>
                 }
             </div>
+
+
             @{
                 var username = Context.Session.GetString("username");
                 var profileImagePath = Context.Session.GetString("profileImagePath") ?? "/img/user/user-1.png";
             }
+
+
             <div class="right">
-                
-                
-                <div class="searchEngine" id="searchEngine">
-                    <input type="text" placeholder="...">
-                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
-                </div>
+               
+
+                <form asp-controller="Home" asp-action="Search" method="get" id="searchForm" style="display: inline;">
+                    <input type="text" name="query" placeholder="Blog ara..." id="searchInput"
+                           style="display: none; padding: 5px;" />
+                </form>
+
+                <i class="fa-solid fa-magnifying-glass" id="searchIcon" style="cursor: pointer;"></i>
+
                 @if (Context.Session.GetString("username") != null)
                 {
                     <span class="user-image">
