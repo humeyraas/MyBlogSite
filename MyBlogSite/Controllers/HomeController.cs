@@ -46,7 +46,7 @@ namespace MyBlogSite.Controllers
         }
         public IActionResult Index(int? categoryId)
         {
-            ViewBag.Categories = _context.Categories.ToList(); // Menü bar için
+            ViewBag.Categories = _context.Categories.ToList();
 
             var blogs = _context.Blogs
                 .Include(b => b.User)
@@ -59,8 +59,36 @@ namespace MyBlogSite.Controllers
                 blogs = blogs.Where(b => b.CategoryId == categoryId.Value);
             }
 
+            // En çok görüntülenen 5 blog
+            ViewBag.PopularBlogs = _context.Blogs
+                .OrderByDescending(b => b.Views)
+                .Take(5)
+                .ToList();
+
             return View(blogs.ToList());
         }
+
+
+
+
+        public IActionResult Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return RedirectToAction("Index");
+            }
+
+            var results = _context.Blogs
+                .Include(b => b.User)
+                .Include(b => b.Category)
+                .Where(b => b.Title.Contains(query) || b.Content.Contains(query))
+                .OrderByDescending(b => b.CreatedAt)
+                .ToList();
+
+            ViewBag.Categories = _context.Categories.ToList(); // Menü için tekrar ekliyoruz
+            return View("SearchResults", results);
+        }
+
 
     }
 }

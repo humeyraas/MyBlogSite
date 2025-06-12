@@ -1,0 +1,45 @@
+﻿@model List<MyBlogSite.Models.Blog>
+
+@{
+    ViewData["Title"] = "Arama Sonuçları";
+    Layout = "~/Views/Shared/_Layout.cshtml";  // Senin layout dosyanın yolu
+}
+
+<div class="home">
+    <div class="wrapper">
+        <div class="posts">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var blog in Model)
+                {
+                    <div class="post target" onclick="location.href='@Url.Action("Detail", "Blog", new { id = blog.Id })'" style="cursor:pointer;">
+                        <h1>@blog.Title</h1>
+                        <img src="@blog.ImageUrl" alt="@blog.Title" />
+                        <p>
+                            @if (!string.IsNullOrEmpty(blog.Content) && blog.Content.Length > 100)
+                            {
+                                @Html.Raw(blog.Content.Substring(0, 100) + "...")
+                            }
+                            else
+                            {
+                                @Html.Raw(blog.Content)
+                            }
+                        </p>
+                        <div class="authorAndDate">
+                            <span>@blog.User?.Username</span>
+                            <span>@blog.CreatedAt.ToShortDateString()</span>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Arama kriterlerinize uygun blog bulunamadı.</p>
+            }
+        </div>
+
+        <div class="sidebar">
+            <!-- Eğer ana sayfada sidebar varsa, burada da ekleyebilirsin -->
+        </div>
+    </div>
+</div>

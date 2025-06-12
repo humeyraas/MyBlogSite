@@ -71,3 +71,60 @@
 .sidebar .area.active {
    opacity: 1;
 }
+
+
+
+
+/*popüler blogs*/
+
+
+.popular-blogs {
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+}
+
+    .popular-blogs h3 {
+        font-family: 'Pacifico', cursive;
+        font-size: 20px;
+        margin-bottom: 15px;
+        text-align: center;
+        position: relative;
+    }
+
+        .popular-blogs h3::after {
+            content: '';
+            position: absolute;
+            width: 40%;
+            height: 2px;
+            background-color: #333;
+            bottom: 0;
+            left: 30%;
+        }
+
+    .popular-blogs ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .popular-blogs li {
+        margin-bottom: 8px;
+    }
+
+    .popular-blogs a {
+        font-family: 'Josefin Sans', sans-serif;
+        text-decoration: none;
+        color: #333;
+        background-color: rgba(0, 0, 0, 0.03);
+        display: block;
+        padding: 6px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .popular-blogs a:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
