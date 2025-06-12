@@ -16,6 +16,9 @@ namespace MyBlogSite.Models
 
         public string Role { get; set; } = "User"; // Default: "User", alternatif: "Admin"
 
+        public string? ProfileImagePath { get; set; } 
+        public string? About { get; set; } 
+
         public ICollection<Blog>? Blogs { get; set; }
         public ICollection<Comment>? Comments { get; set; }
     }

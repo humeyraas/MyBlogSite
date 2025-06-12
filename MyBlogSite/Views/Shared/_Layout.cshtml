@@ -46,17 +46,22 @@
                     <a asp-controller="Auth" asp-action="Login">LOGIN</a>
                 }
             </div>
+            @{
+                var username = Context.Session.GetString("username");
+                var profileImagePath = Context.Session.GetString("profileImagePath") ?? "/img/user/user-1.png";
+            }
             <div class="right">
                 
-                <span>
-                    <img src="~/img/user/user-1.png" alt="user">
-                </span>
+                
                 <div class="searchEngine" id="searchEngine">
                     <input type="text" placeholder="...">
                     <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
                 </div>
                 @if (Context.Session.GetString("username") != null)
                 {
+                    <span class="user-image">
+                        <img src="@profileImagePath" alt="user" />
+                    </span>
                     <a asp-controller="User" asp-action="Settings" title="Ayarlar" class="settings-link">
                         <i class="fa-solid fa-gear"></i>
                     </a>

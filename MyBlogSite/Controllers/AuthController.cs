@@ -76,7 +76,7 @@ namespace MyBlogSite.Controllers
             HttpContext.Session.SetString("username", user.Username);
             HttpContext.Session.SetString("role", user.Role);
             HttpContext.Session.SetInt32("userId", user.Id);
-
+            HttpContext.Session.SetString("profileImagePath", user.ProfileImagePath ?? "/img/user/user-1.png");
 
             return RedirectToAction("Index", "Home");
         }

@@ -52,42 +52,69 @@
             </div>
 
             <div class="comment-section" style="margin-top: 40px;">
-                <h3>Yorumlar</h3>
+                
 
                 @if (Model.Comments != null && Model.Comments.Any())
                 {
                     <ul style="list-style: none; padding: 0;">
-                        @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
-                        {
-                            <li class="comment-item">
-                                <div class="comment-header">
-                                    <div class="comment-user-info">
-                                        <strong>@comment.User?.Username</strong>
-                                        <small>@comment.CreatedAt.ToShortDateString()</small>
-                                    </div>
-                                    @if (ViewBag.CurrentUserId != null && comment.UserId == (int)ViewBag.CurrentUserId)
+                        <div class="comment-section" style="margin-top: 40px;">
+                            <h3>Yorumlar</h3>
+
+                            @if (Model.Comments != null && Model.Comments.Any())
+                            {
+                                <ul style="list-style: none; padding: 0;">
+                                    @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
                                     {
-                                        <form asp-action="DeleteComment" asp-controller="Blog" asp-route-id="@comment.Id"
-                                              method="post" class="delete-comment-form"
-                                              onsubmit="return confirm('Yorumu silmek istediğinizden emin misiniz?');">
-                                            <button type="submit" class="delete-comment-btn" title="Yorumu Sil">
-                                                <i class="fa-regular fa-trash-can"></i>
-                                            </button>
-                                        </form>
+                                        var imagePath = string.IsNullOrEmpty(comment.User?.ProfileImagePath)
+                                        ? Url.Content("~/img/user/user-1.png")
+                                        : Url.Content(comment.User.ProfileImagePath);
+
+                                        <li class="comment-item">
+                                            <div class="comment-user-image">
+                                                <img src="@imagePath" alt="Profil" />
+                                            </div>
+
+                                            <div class="comment-content-container">
+                                                <div class="comment-header">
+                                                    <div class="comment-user-info">@comment.User?.Username</div>
+
+                                                    <div class="comment-meta">
+                                                        <span class="comment-date">@comment.CreatedAt.ToShortDateString()</span>
+                                                        @if (ViewBag.CurrentUserId != null && comment.UserId == (int)ViewBag.CurrentUserId)
+                                                        {
+                                                            <form asp-action="DeleteComment" asp-controller="Blog" asp-route-id="@comment.Id"
+                                                                  method="post" class="delete-comment-form"
+                                                                  onsubmit="return confirm('Yorumu silmek istediğinizden emin misiniz?');">
+                                                                <button type="submit" class="delete-comment-btn" title="Yorumu Sil">
+                                                                    <i class="fa-regular fa-trash-can"></i>
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                                <div class="comment-content">@comment.Content</div>
+                                            </div>
+                                        </li>
+
                                     }
-                                </div>
-                                <p class="comment-content">@comment.Content</p>
-                            </li>
-                        }
+
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>Henüz yorum yapılmamış.</p>
+                            }
+                        </div>
+
                     </ul>
-
-
                 }
                 else
                 {
                     <p>Henüz yorum yapılmamış.</p>
                 }
             </div>
+
 
 
                 <!-- Yorum formu -->
