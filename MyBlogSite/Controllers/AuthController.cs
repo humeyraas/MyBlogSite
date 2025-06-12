@@ -14,22 +14,28 @@ namespace MyBlogSite.Controllers
         public AuthController(ApplicationDbContext context)
         {
             _context = context;
+            
         }
 
         [HttpGet]
         public IActionResult Register()
         {
+            ViewBag.Categories = _context.Categories.ToList();
+
             return View();
+            
         }
 
         [HttpPost]
         public IActionResult Register( string Username, string Password)
         {
-            // Basit validasyon
+
+            ViewBag.Categories = _context.Categories.ToList();
+
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
                 return View();
 
-            // Kullanıcıyı oluştur
+            
             var user = new User
             {
                 
@@ -47,12 +53,16 @@ namespace MyBlogSite.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            ViewBag.Categories = _context.Categories.ToList();
+
             return View();
         }
 
         [HttpPost]
         public IActionResult Login(string Username, string Password)
         {
+            ViewBag.Categories = _context.Categories.ToList();
+
             var user = _context.Users
                 .FirstOrDefault(u => u.Username == Username && u.Password == Password);
 
@@ -74,6 +84,8 @@ namespace MyBlogSite.Controllers
 
         public IActionResult Logout()
         {
+            ViewBag.Categories = _context.Categories.ToList();
+
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }

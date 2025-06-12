@@ -15,6 +15,8 @@ namespace MyBlogSite.Data
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Like> Likes { get; set; }
+        public DbSet<Repost> Reposts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -30,6 +32,18 @@ namespace MyBlogSite.Data
                 .WithMany(b => b.Comments)
                 .HasForeignKey(c => c.BlogId)
                 .OnDelete(DeleteBehavior.Cascade); // bu kalabilir
+
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.User)
+                .WithMany()
+                .HasForeignKey(l => l.UserId)
+                .OnDelete(DeleteBehavior.NoAction); // 🔥 işte bu çözüm
+
+            modelBuilder.Entity<Repost>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
     }

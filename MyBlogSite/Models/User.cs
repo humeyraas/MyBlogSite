@@ -1,5 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using MyBlogSite.Models; // veya senin model namespace’in
+
 
 namespace MyBlogSite.Models
 {

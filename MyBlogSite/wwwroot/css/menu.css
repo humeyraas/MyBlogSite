@@ -64,3 +64,15 @@
 .posts .post {
     display: block;
 }
+.category-menu ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+    .category-menu ul li a:hover {
+        color: #e754d2;
+        transform: translateX(8px);
+    }

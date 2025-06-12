@@ -1,0 +1,33 @@
+﻿@model MyBlogSite.Models.Blog
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Detail</title>
+</head>
+<body>
+<div class="detail">
+    <div class="detail-header" style="background-image: url('@Model.ImageUrl');">
+        <div class="overlay"></div>
+        <div class="detail-header-content">
+            <h1>@Model.Title</h1>
+            <h3>@Model.Category?.Name</h3>
+            <p class="authorAndDate">
+                <span>@Model.User?.Username</span>
+                <span>@Model.CreatedAt.ToString("dd MMM yyyy")</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="detail-body">
+        @Html.Raw(Model.Content)
+    </div>
+</div>
+</body>
+</html>

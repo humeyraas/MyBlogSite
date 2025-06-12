@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
+using MyBlogSite.Models; // veya senin model namespace’in
+
 
 namespace MyBlogSite.Models
 {

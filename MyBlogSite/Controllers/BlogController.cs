@@ -1,68 +1,64 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MyBlogSite.Data;
 using MyBlogSite.Models;
-using Microsoft.AspNetCore.Identity;
-
 
 namespace MyBlogSite.Controllers
 {
     public class BlogController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _env;
 
-        public BlogController(ApplicationDbContext context, IWebHostEnvironment env)
+        public BlogController(ApplicationDbContext context)
         {
             _context = context;
-            _env = env;
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult Edit(int id)
         {
-            var categories = _context.Categories.ToList();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
-            return View();
+            var blog = _context.Blogs.FirstOrDefault(b => b.Id == id);
+            if (blog == null) return NotFound();
+            return View(blog);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(Blog blog, IFormFile? file)
+        public IActionResult Edit(Blog blog)
         {
-            if (!ModelState.IsValid)
-                return View(blog);
+            _context.Blogs.Update(blog);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Profile");
+        }
 
-            if (file != null && file.Length > 0)
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var blog = _context.Blogs.FirstOrDefault(b => b.Id == id);
+            if (blog == null) return NotFound();
+
+            _context.Blogs.Remove(blog);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Profile");
+        }
+
+        [HttpGet]
+        public IActionResult Repost(int id)
+        {
+            var username = HttpContext.Session.GetString("username");
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
+            if (user == null) return RedirectToAction("Login", "Auth");
+
+            var blog = _context.Blogs.FirstOrDefault(b => b.Id == id);
+            if (blog == null) return NotFound();
+
+            var alreadyReposted = _context.Reposts.Any(r => r.BlogId == id && r.UserId == user.Id);
+            if (!alreadyReposted)
             {
-                var uploads = Path.Combine(_env.WebRootPath, "uploads");
-                Directory.CreateDirectory(uploads);
-
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                var filePath = Path.Combine(uploads, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-
-                blog.ImageUrl = "/uploads/" + fileName;
+                _context.Reposts.Add(new Repost { BlogId = blog.Id, UserId = user.Id });
+                _context.SaveChanges();
             }
 
-            blog.CreatedAt = DateTime.Now;
-
-            var userId = HttpContext.Session.GetInt32("userId");
-            if (userId == null)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-            blog.UserId = userId.Value;
-
-
-            _context.Blogs.Add(blog);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Profile");
         }
     }
 }
