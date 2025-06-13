@@ -51,6 +51,7 @@
                 var profileImagePath = Context.Session.GetString("profileImagePath") ?? "/img/user/user-1.png";
             }
             <div class="right">
+<<<<<<< Updated upstream
                 
                 
                 <div class="searchEngine" id="searchEngine">
@@ -66,6 +67,27 @@
                         <i class="fa-solid fa-gear"></i>
                     </a>
                 }
+=======
+               
+
+                <form asp-controller="Home" asp-action="Search" method="get" id="searchForm" style="display: inline;">
+                    <input type="text" name="query" placeholder="Blog ara..." id="searchInput"
+                           style="display: none; padding: 5px;" />
+                </form>
+
+                <i class="fa-solid fa-magnifying-glass" id="searchIcon" style="cursor: pointer;"></i>
+
+               @if (Context.Session.GetString("username") != null)
+{
+    <a asp-controller="Profile" asp-action="Index" title="Profil">
+        <img src="@profileImagePath" alt="Profil" style="cursor:pointer; width: 35px; height: 35px; border-radius: 50%;" />
+    </a>
+
+    <a asp-controller="User" asp-action="Settings" title="Ayarlar" class="settings-link" style="margin-left: 10px;">
+        <i class="fa-solid fa-gear"></i>
+    </a>
+}
+>>>>>>> Stashed changes
             </div>
         </div>
     </div>
