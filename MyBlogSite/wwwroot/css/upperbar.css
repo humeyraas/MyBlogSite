@@ -1,0 +1,38 @@
+.upperbar {
+    background-color: #f5f5f5; /* Açýk gri arka plan, istersen deðiþtirebilirsin */
+    height: 30px; /* Ýnce bir bar için uygun yükseklik */
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+    .upperbar .wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .upperbar .left .site-name {
+        font-weight: bold;
+        color: #333;
+        text-decoration: none;
+        padding-left: 10px;
+    }
+
+    .upperbar .right {
+        padding-right: 10px;
+    }
+
+    .upperbar .btn {
+        margin-left: 15px;
+        text-decoration: none;
+        color: #007bff;
+        font-weight: 500;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+        .upperbar .btn:hover {
+            color: #0056b3;
+        }

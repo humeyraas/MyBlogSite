@@ -43,7 +43,20 @@ namespace MyBlogSite.Data
                 .HasOne(bl => bl.Blog)
                 .WithMany()
                 .HasForeignKey(bl => bl.BlogId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // 🔧 Repost için ilişkiler
+            modelBuilder.Entity<Repost>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Repost>()
+                .HasOne(r => r.Blog)
+                .WithMany()
+                .HasForeignKey(r => r.BlogId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
 

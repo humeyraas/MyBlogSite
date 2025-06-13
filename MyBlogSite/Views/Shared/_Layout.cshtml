@@ -28,24 +28,26 @@
                 <i class="fa-brands fa-square-pinterest"></i>
             </div>
             <div class="center">
-                <a asp-controller="Home" asp-action="Index">HOME</a>
-                <a asp-controller="Home" asp-action="About">ABOUT</a>
-
-                @if (Context.Session.GetString("role") == "Admin")
-                {
-                    <a asp-controller="Blog" asp-action="Add">ADD</a>
-                }
+                <a asp-controller="Home" asp-action="Index">ANA SAYFA</a>
+                <a asp-controller="Home" asp-action="About">HAKKIMIZDA</a>
 
                 @if (Context.Session.GetString("username") != null)
                 {
-                    <a asp-controller="Auth" asp-action="Logout">LOGOUT</a>
+                    <a asp-controller="Blog" asp-action="Add">BLOG EKLE</a>
+                    <a asp-controller="Auth" asp-action="Logout">ÇIKIŞ YAP</a>
                 }
                 else
                 {
-                    <a asp-controller="Auth" asp-action="Register">REGISTER</a>
-                    <a asp-controller="Auth" asp-action="Login">LOGIN</a>
+                    <a asp-controller="Auth" asp-action="Register">KAYIT OL</a>
+                    <a asp-controller="Auth" asp-action="Login">GİRİŞ YAP</a>
                 }
             </div>
+<<<<<<< Updated upstream
+=======
+
+
+
+>>>>>>> Stashed changes
             @{
                 var username = Context.Session.GetString("username");
                 var profileImagePath = Context.Session.GetString("profileImagePath") ?? "/img/user/user-1.png";
@@ -108,6 +110,47 @@
    
 
     @await RenderSectionAsync("Scripts", required: false)
+
+
+    
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h3>BİBLOG'LA</h3>
+                <p>
+                    Gündeme sen de ortak ol!
+                    <br /> Paylaş, öğren, ilham al.
+                </p>
+            </div>
+
+            <div class="footer-section links">
+                <h4>Hızlı Linkler</h4>
+                <ul>
+                    <li> <a asp-controller="Home" asp-action="Index">Ana Sayfa</a></li>
+                    <li><a asp-controller="Home" asp-action="About">Hakkımızda</a></li>
+                    <li><a asp-controller="Home" asp-action="Index">Bloglar</a></li>
+
+
+                </ul>
+            </div>
+
+            <div class="footer-section contact">
+                <h4>Bize Ulaş</h4>
+                <p><i class="fas fa-envelope"></i> reklamveiletisimicin@gmail.com</p>
+                <div class="socials">
+                    <a href="https://x.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 BİBLOG | Tüm Hakları Saklıdır.</p>
+        </div>
+    </footer>
 </body>
 
 </html>
