@@ -16,6 +16,7 @@ namespace MyBlogSite.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<BlogLike> BlogLikes { get; set; }
+        public DbSet<Repost> Reposts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
