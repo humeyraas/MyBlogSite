@@ -2,28 +2,150 @@
 
 @{
     ViewData["Title"] = "Add Blog";
-    Layout = "~/Views/Shared/_Layout.cshtml"; 
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .tag-section {
+        margin-top: 20px;
+    }
+
+    .tags-display {
+        margin-top: 10px;
+    }
+
+    .tag-item {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 6px 12px;
+        margin: 5px 5px 0 0;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+
+        .tag-item:hover {
+            background-color: #0056b3;
+        }
+
+    .preview-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #preview {
+        max-width: 50%; /* Formun yarısı kadar genişlik */
+        max-height: 300px; /* Maksimum yükseklik */
+        width: auto;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        object-fit: contain;
+        display: none; /* JS ile gösteriliyor */
+    }
+
+</style>
 
 <div class="add">
+
+    <!-- Görsel önizleme -->
+    <img id="preview" src="#" alt="Preview" style="display:none; max-height:200px; margin-top:10px;" />
+
+
     <form asp-action="Add" asp-controller="Blog" method="post" enctype="multipart/form-data">
         <div class="text">
-            <input asp-for="Title" placeholder="Your Title *" required />
-            <textarea asp-for="Content" placeholder="Your Content *" required></textarea>
-            
-            <select asp-for="CategoryId" asp-items="ViewBag.CategorySelectList" required>
-                <option value="">Select a Category</option>
+            <input asp-for="Title" placeholder="Başlık *" class="form-control" required />
+
+            <!-- CKEditor textarea -->
+            <textarea asp-for="Content" id="Content" name="Content"></textarea>
+
+            <select asp-for="CategoryId" asp-items="ViewBag.CategorySelectList ?? ViewBag.Categories" class="form-control" required>
+                <option value="">Kategori Seçin</option>
             </select>
+
+            <div class="tag-section">
+                <label for="Tags">Etiketler (virgül ile ayırınız):</label>
+                <input type="text" id="Tags" name="Tags" placeholder="örnek: yazılım, teknoloji, ASP.NET" />
+                <div id="tagContainer" class="tags-display"></div>
+            </div>
         </div>
 
-        <div class="button">
-            <button type="submit">
-                <i class="fa-solid fa-plus"></i>
-            </button>
-            <label for="file">
-                <i class="fa-solid fa-image"></i>
+        <!-- Görsel seçme -->
+        <div class="button mt-2">
+            <label for="file" class="btn btn-secondary">
+                <i class="fa-solid fa-image"></i> Görsel Seç
             </label>
             <input type="file" name="file" id="file" style="display: none;" />
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i> Blog Ekle
+            </button>
         </div>
     </form>
+
+   
 </div>
+
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
+    <script>
+        let editor;
+
+        ClassicEditor
+            .create(document.querySelector('#Content'), {
+                ckfinder: {
+                    uploadUrl: '/Blog/UploadImage'
+                }
+            })
+            .then(newEditor => {
+                editor = newEditor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        document.querySelector("form").addEventListener("submit", function (e) {
+            const content = editor.getData().trim();
+
+            if (!content) {
+                e.preventDefault();
+                alert("Lütfen içerik kısmını doldurun!");
+                return false;
+            }
+
+            document.querySelector("textarea[name='Content']").value = content;
+        });
+
+        document.getElementById("file").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.getElementById("preview");
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        const tagInput = document.getElementById('Tags');
+        const tagContainer = document.getElementById('tagContainer');
+
+        tagInput.addEventListener('input', () => {
+            const tags = tagInput.value.split(',')
+                .map(t => t.trim())
+                .filter(t => t.length > 0);
+
+            tagContainer.innerHTML = '';
+
+            tags.forEach(tag => {
+                const tagElem = document.createElement('span');
+                tagElem.className = 'tag-item';
+                tagElem.textContent = tag;
+                tagElem.onclick = () => alert(`Tıklanan tag: ${tag}`);
+                tagContainer.appendChild(tagElem);
+            });
+        });
+    </script>
+}

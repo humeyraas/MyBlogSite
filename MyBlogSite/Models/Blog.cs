@@ -35,5 +35,8 @@ namespace MyBlogSite.Models
 
         [NotMapped]
         public int LikeCount => LikesList?.Count ?? 0;
+
+        public string? Tags { get; set; }
+
     }
 }

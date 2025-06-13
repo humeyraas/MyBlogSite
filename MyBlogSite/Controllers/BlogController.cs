@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MyBlogSite.Data;
 using MyBlogSite.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MyBlogSite.Controllers
 {
@@ -29,13 +28,12 @@ namespace MyBlogSite.Controllers
 
         public IActionResult Detail(int id)
         {
-            
             var blog = _context.Blogs
                 .Include(b => b.User)
                 .Include(b => b.Comments)
                     .ThenInclude(c => c.User)
                 .Include(b => b.Category)
-               .Include(b => b.LikesList)
+                .Include(b => b.LikesList)
                 .FirstOrDefault(b => b.Id == id);
 
             if (blog == null)
@@ -44,28 +42,30 @@ namespace MyBlogSite.Controllers
             blog.Views += 1;
             _context.SaveChanges();
 
-         
             var categories = _context.Categories.ToList();
             ViewBag.Categories = categories;
             ViewBag.CategorySelectList = new SelectList(categories, "Id", "Name");
 
-            var userId = HttpContext.Session.GetInt32("userId"); 
+            var userId = HttpContext.Session.GetInt32("userId");
             ViewBag.CurrentUserId = userId;
             ViewBag.IsLikedByCurrentUser = blog.LikesList.Any(l => l.UserId == userId);
             ViewBag.LikeCount = _context.BlogLikes.Count(l => l.BlogId == id);
 
-          //  ViewBag.LikeCount = blog.LikesList.Count();
-
             return View(blog);
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(Blog blog, IFormFile? file)
+        public async Task<IActionResult> Add(Blog blog, IFormFile? file, string? Tags)
         {
+            var categories = _context.Categories.ToList();
+
             if (!ModelState.IsValid)
+            {
+                ViewBag.Categories = categories;
+                ViewBag.CategorySelectList = new SelectList(categories, "Id", "Name");
                 return View(blog);
+            }
 
             if (file != null && file.Length > 0)
             {
@@ -87,11 +87,12 @@ namespace MyBlogSite.Controllers
 
             var userId = HttpContext.Session.GetInt32("userId");
             if (!userId.HasValue)
-            {
                 return RedirectToAction("Login", "Auth");
-            }
 
             blog.UserId = userId.Value;
+
+            // Tags özelliğini ekle
+            blog.Tags = Tags;
 
             _context.Blogs.Add(blog);
             await _context.SaveChangesAsync();
@@ -103,10 +104,8 @@ namespace MyBlogSite.Controllers
         public IActionResult AddComment(int blogId, string content)
         {
             var userId = HttpContext.Session.GetInt32("userId");
-            if (userId == null)
-            {
+            if (!userId.HasValue)
                 return RedirectToAction("Login", "Auth");
-            }
 
             var comment = new Comment
             {
@@ -122,7 +121,6 @@ namespace MyBlogSite.Controllers
             return RedirectToAction("Detail", new { id = blogId });
         }
 
-       
         [HttpPost]
         public IActionResult DeleteComment(int id)
         {
@@ -132,7 +130,6 @@ namespace MyBlogSite.Controllers
             if (comment == null)
                 return NotFound();
 
-            // Yalnızca yorumu yazan kişi silebilsin
             if (comment.UserId != sessionUserId)
                 return Unauthorized();
 
@@ -150,18 +147,18 @@ namespace MyBlogSite.Controllers
                 .Include(b => b.User)
                 .Include(b => b.Category)
                 .Include(b => b.Comments)
-                 .Include(b => b.LikesList)
+                .Include(b => b.LikesList)
                 .ToList();
 
             return View(blogs);
         }
+
         [HttpPost]
-        public IActionResult ToggleLike([FromBody] dynamic data)
+        public IActionResult ToggleLike([FromBody] int blogId)
         {
-            int blogId = data.GetProperty("blogId").GetInt32();
             var userId = HttpContext.Session.GetInt32("userId");
 
-            if (userId == null)
+            if (!userId.HasValue)
                 return Unauthorized();
 
             var existingLike = _context.BlogLikes
@@ -190,8 +187,5 @@ namespace MyBlogSite.Controllers
                 count = newLikeCount
             });
         }
-
-
-
     }
 }

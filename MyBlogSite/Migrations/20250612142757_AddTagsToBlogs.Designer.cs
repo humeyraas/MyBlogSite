@@ -12,8 +12,8 @@ using MyBlogSite.Data;
 namespace MyBlogSite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250611120332_ApplyBeyzaChanges")]
-    partial class ApplyBeyzaChanges
+    [Migration("20250612142757_AddTagsToBlogs")]
+    partial class AddTagsToBlogs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,8 +156,14 @@ namespace MyBlogSite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("About")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
