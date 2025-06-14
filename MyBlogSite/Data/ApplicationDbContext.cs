@@ -18,6 +18,7 @@ namespace MyBlogSite.Data
         public DbSet<BlogLike> BlogLikes { get; set; }
         public DbSet<Repost> Reposts { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

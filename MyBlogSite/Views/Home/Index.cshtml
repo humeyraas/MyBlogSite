@@ -45,6 +45,12 @@
                             <span>@blog.User?.Username</span>
                             <span>@blog.CreatedAt.ToShortDateString()</span>
                         </div>
+                        <div class="blog-actions">
+                            <a asp-controller="Blog" asp-action="Repost" asp-route-id="@blog.Id" title="Repostla" onclick="event.stopPropagation();">
+                                <i class="fas fa-retweet" style="cursor: pointer;"></i>
+                            </a>
+                        </div>
+
                     </div>
                 }
             </div>
