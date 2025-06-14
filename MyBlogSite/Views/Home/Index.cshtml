@@ -50,7 +50,20 @@
             </div>
 
             <div class="sidebar">
-               
+                <div class="popular-blogs">
+                    <h3>Popüler Bloglar</h3>
+                    <ul>
+                        @foreach (var blog in ViewBag.PopularBlogs as List<MyBlogSite.Models.Blog>)
+                        {
+                            <li>
+                                <a href="@Url.Action("Detail", "Blog", new { id = blog.Id })">
+                                    @blog.Title
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>
