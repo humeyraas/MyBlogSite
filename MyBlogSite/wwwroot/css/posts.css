@@ -100,3 +100,12 @@
         transform: scale(1.02);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+.blog-actions {
+    margin-top: 10px;
+    text-align: right;
+}
+
+    .blog-actions i:hover {
+        color: #0074D9;
+    }
+

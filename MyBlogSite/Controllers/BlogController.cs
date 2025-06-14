@@ -141,6 +141,84 @@ namespace MyBlogSite.Controllers
             return RedirectToAction("Detail", new { id = blogId });
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var blog = await _context.Blogs.FindAsync(id);
+            if (blog == null)
+                return NotFound();
+
+            // Silmeden önce oturum kontrolü (güvenlik için önerilir)
+            var userId = HttpContext.Session.GetInt32("userId");
+            if (userId != blog.UserId)
+                return Unauthorized();
+
+            _context.Blogs.Remove(blog);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Profile"); //  PROFİL SAYFASINA YÖNLENDİR
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var blog = _context.Blogs.FirstOrDefault(b => b.Id == id);
+            if (blog == null)
+                return NotFound();
+
+            var userId = HttpContext.Session.GetInt32("userId");
+            if (blog.UserId != userId)
+                return Unauthorized();
+
+            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.CategorySelectList = new SelectList(_context.Categories, "Id", "Name");
+
+            return View(blog);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Blog blog, IFormFile? file)
+        {
+            var existingBlog = await _context.Blogs.FindAsync(blog.Id);
+            if (existingBlog == null)
+                return NotFound();
+
+            var userId = HttpContext.Session.GetInt32("userId");
+            if (existingBlog.UserId != userId)
+                return Unauthorized();
+
+            existingBlog.Title = blog.Title;
+            existingBlog.Content = blog.Content;
+            existingBlog.CategoryId = blog.CategoryId;
+            existingBlog.Tags = blog.Tags;
+
+            if (file != null && file.Length > 0)
+            {
+                var uploads = Path.Combine(_env.WebRootPath, "uploads");
+                Directory.CreateDirectory(uploads);
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                var filePath = Path.Combine(uploads, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                existingBlog.ImageUrl = "/uploads/" + fileName;
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Detail", new { id = blog.Id }); // İsteğe göre: "Profile" da olabilir
+        }
+
+
+
+
         public IActionResult Index()
         {
             var blogs = _context.Blogs
@@ -187,5 +265,61 @@ namespace MyBlogSite.Controllers
                 count = newLikeCount
             });
         }
+        [HttpGet]
+        public IActionResult Repost(int id)
+        {
+            var username = HttpContext.Session.GetString("username");
+            if (username == null)
+                return RedirectToAction("Login", "Auth");
+
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
+            if (user == null)
+                return NotFound();
+
+            var existing = _context.Reposts.FirstOrDefault(r => r.UserId == user.Id && r.BlogId == id);
+            if (existing != null)
+                return RedirectToAction("Index", "Profile"); // Zaten repostlanmışsa tekrar eklemesin
+
+            var repost = new Repost
+            {
+                UserId = user.Id,
+                BlogId = id,
+            };
+
+            _context.Reposts.Add(repost);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Profile"); // Başarılıysa profile dön
+        }
+        [HttpGet]
+        public IActionResult ToggleRepost(int id, string tab = "own")
+        {
+            var username = HttpContext.Session.GetString("username");
+            if (username == null)
+                return RedirectToAction("Login", "Auth");
+
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
+            if (user == null)
+                return NotFound();
+
+            var existingRepost = _context.Reposts.FirstOrDefault(r => r.UserId == user.Id && r.BlogId == id);
+
+            if (existingRepost != null)
+            {
+                // Zaten repostlanmışsa kaldır
+                _context.Reposts.Remove(existingRepost);
+            }
+            else
+            {
+                // Repostla
+                var repost = new Repost { BlogId = id, UserId = user.Id };
+                _context.Reposts.Add(repost);
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Profile", new { tab });
+        }
+
+
     }
 }

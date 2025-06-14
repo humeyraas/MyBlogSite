@@ -12,7 +12,7 @@ public class ProfileController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string tab = "own")
     {
         ViewBag.Categories = _context.Categories.ToList();
         var userName = HttpContext.Session.GetString("username");
@@ -42,7 +42,8 @@ public class ProfileController : Controller
             OwnPosts = ownPosts,
             LikedPosts = likedPosts,
             RepostedPosts = repostedPosts,
-            User = user
+            User = user,
+            SelectedTab = tab
         };
         ViewBag.ProfileImagePath = user.ProfileImagePath ?? "/img/user/user-1.png";
 

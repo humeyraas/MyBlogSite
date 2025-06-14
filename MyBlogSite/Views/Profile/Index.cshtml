@@ -69,12 +69,17 @@
                             </div>
                             <div class="card-footer">
                                 <div class="options">
-                                    <a asp-action="Edit" asp-controller="Blog" asp-route-id="@blog.Id" title="D�zenle">
+                                    <a asp-action="Edit" asp-controller="Blog" asp-route-id="@blog.Id" title="Düzenle">
                                         <i class="fas fa-pen-to-square"></i>
                                     </a>
-                                    <a asp-action="Delete" asp-controller="Blog" asp-route-id="@blog.Id" title="Sil" style="margin-left:10px;">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+
+                                    <form asp-action="Delete" asp-controller="Blog" asp-route-id="@blog.Id" method="post" style="display:inline;" onsubmit="return confirm('Bu blogu silmek istediğine emin misin?')">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" title="Sil" style="background:none; border:none; color:red; cursor:pointer;">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+
                                     <a asp-action="Repost" asp-controller="Blog" asp-route-id="@blog.Id">
                                         <i class="fas fa-retweet" title="Repostla"></i>
                                     </a>
@@ -107,13 +112,24 @@
             <div id="repost" class="tab-content posts">
                 @foreach (var blog in Model.RepostedPosts)
                 {
-                    <div class="post target">
-                        <h1>@blog.Title</h1>
+                    <div class="profile-post">
                         <img src="@blog.ImageUrl" alt="@blog.Title" />
-                        <p>@(blog.Content.Length > 100 ? blog.Content.Substring(0, 100) + "..." : blog.Content)</p>
-                        <div class="authorAndDate">
-                            <span>@blog.User?.Username</span>
-                            <span>@blog.CreatedAt.ToShortDateString()</span>
+                        <div class="bottom">
+                            <div>
+                                <h1>@blog.Title</h1>
+                                <p>@(blog.Content.Length > 100 ? blog.Content.Substring(0, 100) + "..." : blog.Content)</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="options">
+                                    <a asp-controller="Blog" asp-action="ToggleRepost" asp-route-id="@blog.Id" asp-route-tab="repost" title="Repost'u kaldır">
+                                        <i class="fas fa-retweet"></i>
+                                    </a>
+                                </div>
+                                <div class="authorAndDate">
+                                    <span>@blog.User?.Username</span>
+                                    <span>@blog.CreatedAt.ToShortDateString()</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 }

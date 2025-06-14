@@ -8,6 +8,8 @@ namespace MyBlogSite.Models
         public List<Blog> LikedPosts { get; set; }
         public List<Blog> RepostedPosts { get; set; }
         public User User { get; set; }
+        public string SelectedTab { get; set; } = "own";
+
 
     }
 }
