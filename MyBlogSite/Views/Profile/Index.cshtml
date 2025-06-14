@@ -69,12 +69,17 @@
                             </div>
                             <div class="card-footer">
                                 <div class="options">
-                                    <a asp-action="Edit" asp-controller="Blog" asp-route-id="@blog.Id" title="D�zenle">
+                                    <a asp-action="Edit" asp-controller="Blog" asp-route-id="@blog.Id" title="Düzenle">
                                         <i class="fas fa-pen-to-square"></i>
                                     </a>
-                                    <a asp-action="Delete" asp-controller="Blog" asp-route-id="@blog.Id" title="Sil" style="margin-left:10px;">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+
+                                    <form asp-action="Delete" asp-controller="Blog" asp-route-id="@blog.Id" method="post" style="display:inline;" onsubmit="return confirm('Bu blogu silmek istediğine emin misin?')">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" title="Sil" style="background:none; border:none; color:red; cursor:pointer;">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+
                                     <a asp-action="Repost" asp-controller="Blog" asp-route-id="@blog.Id">
                                         <i class="fas fa-retweet" title="Repostla"></i>
                                     </a>
