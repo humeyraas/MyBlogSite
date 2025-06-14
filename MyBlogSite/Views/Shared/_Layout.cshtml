@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿﻿
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
 
-  
+
     <link rel="stylesheet" href="~/css/index.css" />
     <link rel="stylesheet" href="~/css/menu.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -15,9 +16,12 @@
 </head>
 
 <body>
-   
+
+
+
+
     <div class="topbar">
-         
+
         <div class="wrapper target">
 
             <div class="left">
@@ -35,36 +39,28 @@
                 </a>
             </div>
 
-
             <div class="center">
-                <a asp-controller="Home" asp-action="Index">HOME</a>
-                <a asp-controller="Home" asp-action="About">ABOUT</a>
-
-                @if (Context.Session.GetString("role") == "Admin")
-                {
-                    <a asp-controller="Blog" asp-action="Add">ADD</a>
-                }
+                <a asp-controller="Home" asp-action="Index">ANA SAYFA</a>
+                <a asp-controller="Home" asp-action="About">HAKKIMIZDA</a>
 
                 @if (Context.Session.GetString("username") != null)
                 {
-                    <a asp-controller="Auth" asp-action="Logout">LOGOUT</a>
+                    <a asp-controller="Blog" asp-action="Add">BLOG EKLE</a>
+                    <a asp-controller="Auth" asp-action="Logout">ÇIKIŞ YAP</a>
                 }
                 else
                 {
-                    <a asp-controller="Auth" asp-action="Register">REGISTER</a>
-                    <a asp-controller="Auth" asp-action="Login">LOGIN</a>
+                    <a asp-controller="Auth" asp-action="Register">KAYIT OL</a>
+                    <a asp-controller="Auth" asp-action="Login">GİRİŞ YAP</a>
                 }
             </div>
-
-
-            @{
-                var username = Context.Session.GetString("username");
-                var profileImagePath = Context.Session.GetString("profileImagePath") ?? "/img/user/user-1.png";
-            }
-
-
+            
+                @{
+                    var username = Context.Session.GetString("username");
+                    var profileImagePath = Context.Session.GetString("profileImagePath") ?? "/img/user/user-1.png";
+                }
             <div class="right">
-               
+
 
                 <form asp-controller="Home" asp-action="Search" method="get" id="searchForm" style="display: inline;">
                     <input type="text" name="query" placeholder="Blog ara..." id="searchInput"
@@ -73,58 +69,99 @@
 
                 <i class="fa-solid fa-magnifying-glass" id="searchIcon" style="cursor: pointer;"></i>
 
-               @if (Context.Session.GetString("username") != null)
-{
-                <a asp-controller="Profile" asp-action="Index" title="Profil">
-                    <img src="@profileImagePath" alt="Profil" style="cursor:pointer; width: 35px; height: 35px; border-radius: 50%;" />
-                </a>
+                    @if (Context.Session.GetString("username") != null)
+                    {
+                    <a asp-controller="Profile" asp-action="Index" title="Profil">
+                        <img src="@profileImagePath" alt="Profil" style="cursor:pointer; width: 35px; height: 35px; border-radius: 50%;" />
+                    </a>
 
-                <a asp-controller="User" asp-action="Settings" title="Ayarlar" class="settings-link" style="margin-left: 10px;">
-                    <i class="fa-solid fa-gear"></i>
-                </a>
-}
+                    <a asp-controller="User" asp-action="Settings" title="Ayarlar" class="settings-link">
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
+                    }
             </div>
         </div>
     </div>
 
-   
+
     <div class="menu-button" title="Kategoriler" onclick="toggleMenu()">
         <i class="fas fa-bars"></i>
     </div>
 
-    
-        <div class="category-menu" id="categoryMenu">
-            <h3>Kategoriler</h3>
-            <ul>
-                @if (ViewBag.Categories != null)
+
+    <div class="category-menu" id="categoryMenu">
+        <h3>Kategoriler</h3>
+        <ul>
+            @if (ViewBag.Categories != null)
+            {
+                foreach (var category in ViewBag.Categories as List<MyBlogSite.Models.Category>)
                 {
-                    foreach (var category in ViewBag.Categories as List<MyBlogSite.Models.Category>)
-                    {
-                        <li>
-                            <a href="@Url.Action("Index", "Home", new { categoryId = category.Id })">
-                                @category.Name
-                            </a>
-                        </li>
-                    }
+                    <li>
+                        <a href="@Url.Action("Index", "Home", new { categoryId = category.Id })">
+                            @category.Name
+                        </a>
+                    </li>
                 }
-            </ul>
-        </div>
-    
+            }
+        </ul>
+    </div>
 
 
 
-    
+
+
     @RenderBody()
 
-   
+
     <script src="~/js/search.js"></script>
     <script src="~/js/scroll.js"></script>
     <script src="~/js/menu.js"></script>
-   
+
     <script src="~/js/toggleLike.js"></script>
-   
+
 
     @await RenderSectionAsync("Scripts", required: false)
+
+
+
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h3>BİBLOG'LA</h3>
+                <p>
+                    Gündeme sen de ortak ol!
+                    <br /> Paylaş, öğren, ilham al.
+                </p>
+            </div>
+
+            <div class="footer-section links">
+                <h4>Hızlı Linkler</h4>
+                <ul>
+                    <li> <a asp-controller="Home" asp-action="Index">Ana Sayfa</a></li>
+                    <li><a asp-controller="Home" asp-action="About">Hakkımızda</a></li>
+                    <li><a asp-controller="Home" asp-action="Index">Bloglar</a></li>
+
+
+                </ul>
+            </div>
+
+            <div class="footer-section contact">
+                <h4>Bize Ulaş</h4>
+                <p><i class="fas fa-envelope"></i> reklamveiletisimicin@gmail.com</p>
+                <div class="socials">
+                    <a href="https://x.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 BİBLOG | Tüm Hakları Saklıdır.</p>
+        </div>
+    </footer>
 </body>
 
 </html>
