@@ -37,6 +37,31 @@
             
             @Html.Raw(Model.Content)
 
+            @if (!string.IsNullOrEmpty(Model.Tags))
+            {
+                var tags = Model.Tags.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+                <div class="tag-section" style="margin-top: 30px;">
+                    <h4>Etiketler:</h4>
+                    <div>
+                        @foreach (var tag in tags)
+                        {
+                            <span class="tag-item" style="
+                    display: inline-block;
+                    background-color: #007bff;
+                    color: white;
+                    padding: 5px 12px;
+                    margin: 0 8px 8px 0;
+                    border-radius: 15px;
+                    font-size: 0.9rem;
+                    cursor: default;
+                        ">
+                                @tag.Trim()
+                            </span>
+                        }
+                    </div>
+                </div>
+            }
+
             
             <div class="interaction-bar" style="margin: 30px 0; display: flex; gap: 20px; font-family: 'Ubuntu Mono', monospace; color: gray;">
                 <span><i class="fa-regular fa-comment"></i> @Model.Comments?.Count() yorum</span>
