@@ -102,33 +102,27 @@
             <div id="liked" class="tab-content posts">
                 @foreach (var blog in Model.LikedPosts)
                 {
-                    <div class="post target">
-                        <h1>@blog.Title</h1>
-                        <img src="@blog.ImageUrl" alt="@blog.Title" />
-                        <p>@(blog.Content.Length > 100 ? blog.Content.Substring(0, 100) + "..." : blog.Content)</p>
-                        <div class="authorAndDate">
-                            <span>@blog.User?.Username</span>
-                            <span>@blog.CreatedAt.ToShortDateString()</span>
-                        </div>
-                    </div>
-                }
-            </div>
-
-            <div id="repost" class="tab-content posts">
-                @foreach (var blog in Model.RepostedPosts)
-                {
                     <div class="profile-post">
-                        <img src="@blog.ImageUrl" alt="@blog.Title" />
+                        @if (!string.IsNullOrEmpty(blog.ImageUrl))
+                        {
+                            <img src="@blog.ImageUrl" alt="@blog.Title" />
+                        }
+
                         <div class="bottom">
                             <div>
-                                <h1>@blog.Title</h1>
+                                <h1>
+                                    <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog.Id" class="post-title-link">
+                                        @blog.Title
+                                    </a>
+                                </h1>
                                 <p>@(blog.Content.Length > 100 ? blog.Content.Substring(0, 100) + "..." : blog.Content)</p>
                             </div>
+
                             <div class="card-footer">
                                 <div class="options">
-                                    <a asp-controller="Blog" asp-action="ToggleRepost" asp-route-id="@blog.Id" asp-route-tab="repost" title="Repost'u kaldır">
-                                        <i class="fas fa-retweet"></i>
-                                    </a>
+                                    <button class="like-button liked" data-blog-id="@blog.Id" title="Beğenmekten vazgeç">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
                                 </div>
                                 <div class="authorAndDate">
                                     <span>@blog.User?.Username</span>
@@ -139,6 +133,45 @@
                     </div>
                 }
             </div>
+
+
+
+            <div id="repost" class="tab-content posts">
+                @foreach (var blog in Model.RepostedPosts)
+                {
+                    <div class="profile-post">
+                        @if (!string.IsNullOrEmpty(blog.ImageUrl))
+                        {
+                            <img src="@blog.ImageUrl" alt="@blog.Title" />
+                        }
+
+                        <div class="bottom">
+                            <div>
+                                <h1>
+                                    <a asp-controller="Blog" asp-action="Detail" asp-route-id="@blog.Id" class="post-title-link">
+                                        @blog.Title
+                                    </a>
+                                </h1>
+                                <p>@(blog.Content.Length > 100 ? blog.Content.Substring(0, 100) + "..." : blog.Content)</p>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="options">
+                                <a asp-controller="Blog" asp-action="ToggleRepost" asp-route-id="@blog.Id" asp-route-tab="repost" title="Repost'u kaldır">
+                                    <i class="fas fa-retweet"></i>
+                                </a>
+                            </div>
+                            <div class="authorAndDate">
+                                <span>@blog.User?.Username</span>
+                                <span>@blog.CreatedAt.ToShortDateString()</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+
 
         </div>
     </div>

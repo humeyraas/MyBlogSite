@@ -10,3 +10,28 @@
 
 
 }
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.like-button').forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const blogId = button.getAttribute('data-blog-id');
+
+            const response = await fetch('/Blog/ToggleLike', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ blogId: parseInt(blogId) })
+            });
+
+            if (response.ok) {
+                // Opsiyonel: Kalbi değiştir
+                button.classList.remove('liked');
+                // Veya sayfayı yeniden yükle
+                location.reload(); // Kaldırmak istersen sekmeden çıkartırsın
+            } else {
+                alert("İşlem başarısız.");
+            }
+        });
+    });
+});
