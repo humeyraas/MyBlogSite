@@ -266,7 +266,6 @@ namespace MyBlogSite.Controllers
                 count = newLikeCount
             });
         }
-
         [HttpGet]
         public IActionResult ToggleLike(int id)
         {
