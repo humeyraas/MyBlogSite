@@ -232,8 +232,9 @@ namespace MyBlogSite.Controllers
         }
 
         [HttpPost]
-        public IActionResult ToggleLike([FromBody] int blogId)
+        public IActionResult ToggleLike([FromBody] dynamic data)
         {
+            int blogId = data.GetProperty("blogId").GetInt32();
             var userId = HttpContext.Session.GetInt32("userId");
 
             if (!userId.HasValue)
@@ -265,6 +266,7 @@ namespace MyBlogSite.Controllers
                 count = newLikeCount
             });
         }
+
         [HttpGet]
         public IActionResult Repost(int id)
         {
