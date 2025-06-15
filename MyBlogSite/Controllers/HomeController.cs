@@ -15,11 +15,11 @@ namespace MyBlogSite.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int? categoryId)
+        public IActionResult Index(int? categoryId, string tag)
         {
-            ViewBag.Categories = _context.Categories.ToList(); // Menü bar için
+            ViewBag.Categories = _context.Categories.ToList();
 
-            var blogs = _context.Blogs
+            var blogsQuery = _context.Blogs
                 .Include(b => b.User)
                 .Include(b => b.Category)
                 .OrderByDescending(b => b.CreatedAt)
@@ -27,17 +27,29 @@ namespace MyBlogSite.Controllers
 
             if (categoryId.HasValue)
             {
-                blogs = blogs.Where(b => b.CategoryId == categoryId.Value);
+                blogsQuery = blogsQuery.Where(b => b.CategoryId == categoryId.Value);
             }
 
-            // En çok görüntülenen 5 blog (Sidebar veya ana sayfa kýsmý için)
+            var blogs = blogsQuery.ToList(); // Veritabanýndan veriler alýnýyor
+
+            if (!string.IsNullOrEmpty(tag))
+            {
+                // Split iþlemi artýk bellekte yapýlabilir
+                blogs = blogs.Where(b => b.Tags != null &&
+                            b.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                  .Any(t => t.Trim().Equals(tag, StringComparison.OrdinalIgnoreCase)))
+                             .ToList();
+            }
+
             ViewBag.PopularBlogs = _context.Blogs
                 .OrderByDescending(b => b.Views)
                 .Take(5)
                 .ToList();
 
-            return View(blogs.ToList());
+            return View(blogs);
         }
+
+
 
         public IActionResult Search(string query)
         {
@@ -46,12 +58,27 @@ namespace MyBlogSite.Controllers
                 return RedirectToAction("Index");
             }
 
-            var results = _context.Blogs
+            // Bloglarý baþlýk, içerik veya tag (string) içinde arama
+            var matchedBlogs = _context.Blogs
                 .Include(b => b.User)
                 .Include(b => b.Category)
-                .Where(b => b.Title.Contains(query) || b.Content.Contains(query))
+                .Where(b =>
+                    b.Title.Contains(query) ||
+                    b.Content.Contains(query) ||
+                    (b.Tags != null && b.Tags.Contains(query)))
                 .OrderByDescending(b => b.CreatedAt)
                 .ToList();
+
+            // Kullanýcý adýnda arama
+            var matchedUsers = _context.Users
+                .Where(u => u.Username.Contains(query))
+                .ToList();
+
+            var model = new SearchResultsViewModel
+            {
+                Blogs = matchedBlogs,
+                Users = matchedUsers
+            };
 
             ViewBag.Categories = _context.Categories.ToList();
             ViewBag.PopularBlogs = _context.Blogs
@@ -59,8 +86,10 @@ namespace MyBlogSite.Controllers
                 .Take(5)
                 .ToList();
 
-            return View("SearchResults", results); // SearchResults.cshtml adýnda bir view gerektirir
+            return View("SearchResults", model);
         }
+
+
 
         public IActionResult Privacy()
         {

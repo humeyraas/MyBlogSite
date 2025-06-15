@@ -27,8 +27,11 @@
                 <h1>@Model.Title</h1>
                 <h3>@Model.Category?.Name</h3>
                 <p class="authorAndDate">
-                    <span>@Model.User?.Username</span>
-                    <span>@Model.CreatedAt.ToString("dd MMM yyyy")</span>
+                    
+                    <a asp-controller="UserProfile" asp-action="Index" asp-route-id="@Model.UserId" style="text-decoration: none; color: inherit;">
+                        <span>@Model.User?.Username</span>
+                    </a>
+
                 </p>
             </div>
         </div>
@@ -45,19 +48,22 @@
                     <div>
                         @foreach (var tag in tags)
                         {
-                            <span class="tag-item" style="
-                    display: inline-block;
-                    background-color: #007bff;
-                    color: white;
-                    padding: 5px 12px;
-                    margin: 0 8px 8px 0;
-                    border-radius: 15px;
-                    font-size: 0.9rem;
-                    cursor: default;
-                        ">
-                                @tag.Trim()
-                            </span>
+                            var trimmedTag = tag.Trim();
+                            <a href="@Url.Action("Index", "Home", new { tag = trimmedTag })" class="tag-item" style="
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 5px 12px;
+        margin: 0 8px 8px 0;
+        border-radius: 15px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        text-decoration: none;
+            ">
+                                @trimmedTag
+                            </a>
                         }
+
                     </div>
                 </div>
             }
@@ -101,7 +107,10 @@
 
                                             <div class="comment-content-container">
                                                 <div class="comment-header">
-                                                    <div class="comment-user-info">@comment.User?.Username</div>
+                                                    <a asp-controller="UserProfile" asp-action="Index" asp-route-id="@comment.UserId" class="comment-user-info" style="text-decoration: none; color: inherit;">
+                                                        @comment.User?.Username
+                                                    </a>
+
 
                                                     <div class="comment-meta">
                                                         <span class="comment-date">@comment.CreatedAt.ToShortDateString()</span>

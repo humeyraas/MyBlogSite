@@ -1,58 +1,60 @@
-﻿@model List<MyBlogSite.Models.Blog>
+﻿@model MyBlogSite.Models.SearchResultsViewModel
 
 @{
     ViewData["Title"] = "Arama Sonuçları";
-    Layout = "~/Views/Shared/_Layout.cshtml";  // Senin layout dosyanın yolu
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="home">
-    <div class="wrapper">
-        <div class="posts">
-            @if (Model != null && Model.Any())
-            {
-                foreach (var blog in Model)
+<div class="search-results-container">
+    <h2>Arama Sonuçları</h2>
+
+    <div class="search-section">
+        <h3>Bloglar</h3>
+        @if (Model.Blogs != null && Model.Blogs.Any())
+        {
+            <div class="results-grid">
+                @foreach (var blog in Model.Blogs)
                 {
-                    <div class="post target" onclick="location.href='@Url.Action("Detail", "Blog", new { id = blog.Id })'" style="cursor:pointer;">
-                        <h1>@blog.Title</h1>
-                        <img src="@blog.ImageUrl" alt="@blog.Title" />
-                        <p>
-                            @if (!string.IsNullOrEmpty(blog.Content) && blog.Content.Length > 100)
-                            {
-                                @Html.Raw(blog.Content.Substring(0, 100) + "...")
-                            }
-                            else
-                            {
-                                @Html.Raw(blog.Content)
-                            }
-                        </p>
-                        <div class="authorAndDate">
+                    <div class="result-card" onclick="location.href='@Url.Action("Detail", "Blog", new { id = blog.Id })'">
+                        <h4>@blog.Title</h4>
+                        @if (!string.IsNullOrEmpty(blog.ImageUrl))
+                        {
+                            <img src="@blog.ImageUrl" alt="@blog.Title" class="blog-image" />
+                        }
+                        <p>@(blog.Content.Length > 100 ? blog.Content.Substring(0, 100) + "..." : blog.Content)</p>
+                        <div class="meta">
                             <span>@blog.User?.Username</span>
                             <span>@blog.CreatedAt.ToShortDateString()</span>
                         </div>
                     </div>
                 }
-            }
-            else
-            {
-                <p>Arama kriterlerinize uygun blog bulunamadı.</p>
-            }
-        </div>
-
-        <div class="sidebar">
-            <div class="popular-blogs">
-                <h3>Popüler Bloglar</h3>
-                <ul>
-                    @foreach (var blog in ViewBag.PopularBlogs as List<MyBlogSite.Models.Blog>)
-                    {
-                        <li>
-                            <a href="@Url.Action("Detail", "Blog", new { id = blog.Id })">
-                                @blog.Title
-                            </a>
-                        </li>
-                    }
-                </ul>
             </div>
+        }
+        else
+        {
+            <p>Aradığınız kritere uygun blog bulunamadı.</p>
+        }
 
-        </div>
+        <h3>Kullanıcılar</h3>
+        @if (Model.Users != null && Model.Users.Any())
+        {
+            <div class="user-results">
+                @foreach (var user in Model.Users)
+                {
+                    var imagePath = string.IsNullOrEmpty(user.ProfileImagePath)
+                    ? Url.Content("~/img/user/user-1.png")
+                    : Url.Content(user.ProfileImagePath);
+
+                    <a href="@Url.Action("Index", "UserProfile", new { id = user.Id })" class="user-card">
+                        <img src="@imagePath" alt="@user.Username" class="user-img" />
+                        <span>@user.Username</span>
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <p>Aradığınız kritere uygun kullanıcı bulunamadı.</p>
+        }
     </div>
 </div>
