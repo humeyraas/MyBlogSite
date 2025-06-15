@@ -232,8 +232,9 @@ namespace MyBlogSite.Controllers
         }
 
         [HttpPost]
-        public IActionResult ToggleLike([FromBody] int blogId)
+        public IActionResult ToggleLike([FromBody] dynamic data)
         {
+            int blogId = data.GetProperty("blogId").GetInt32();
             var userId = HttpContext.Session.GetInt32("userId");
 
             if (!userId.HasValue)
@@ -265,6 +266,27 @@ namespace MyBlogSite.Controllers
                 count = newLikeCount
             });
         }
+        [HttpGet]
+        public IActionResult ToggleLike(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("userId");
+            if (!userId.HasValue)
+                return RedirectToAction("Login", "Auth");
+
+            var existingLike = _context.BlogLikes.FirstOrDefault(l => l.BlogId == id && l.UserId == userId);
+
+            if (existingLike != null)
+                _context.BlogLikes.Remove(existingLike);
+            else
+                _context.BlogLikes.Add(new BlogLike { BlogId = id, UserId = userId.Value });
+
+            _context.SaveChanges();
+
+            // Nereye gidersek gidelim, beğeniler sekmesine gönder
+            return RedirectToAction("Index", "Profile", new { tab = "liked" });
+        }
+
+
         [HttpGet]
         public IActionResult Repost(int id)
         {

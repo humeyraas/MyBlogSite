@@ -60,6 +60,11 @@
                 border: 1px solid #d1d5db;
                 transition: 0.2s ease;
                 cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 40px;
+                text-decoration: none;
             }
 
                 .profile .profile-header .user .edit-profile:hover {
@@ -144,9 +149,10 @@
 
         .profile .tab-content.active {
             display: grid;
-            grid-template-columns: auto auto auto;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
         }
+
 
     .profile .profile-post {
         background: white;
@@ -154,10 +160,23 @@
         overflow: hidden;
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         border: 1px solid #f3f4f6;
-        height: 350px;
         display: flex;
         flex-direction: column;
+        min-height: 350px;
+        height: 100%;
     }
+
+    /*burası yeni */
+
+        .profile .profile-post img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+
+
 
         .profile .profile-post .bottom {
             background: white;
@@ -212,3 +231,15 @@
     visibility: visible !important;
     opacity: 1 !important;
 }
+
+.post-title-link {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+    .post-title-link:hover {
+        color: #2563eb;  
+        text-decoration: underline;
+    }
+

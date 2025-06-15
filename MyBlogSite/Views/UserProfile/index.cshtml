@@ -1,0 +1,82 @@
+﻿@model MyBlogSite.Models.ProfileViewModel
+
+@{
+    var profileImagePath = Model.User.ProfileImagePath ?? "/img/user/user-1.png";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>@Model.User.Username - Profil</title>
+    <link rel="stylesheet" href="~/css/index.css" />
+    <link rel="stylesheet" href="~/css/profile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="profile">
+        <div class="profile-header">
+            <div class="user">
+                <div class="profile-picture">
+                    <img src="@profileImagePath" />
+                </div>
+                <div class="user-info">
+                    <p class="username">@Model.User.Username</p>
+                    <p class="biography">@Model.User.About</p>
+                    <div class="links">
+                        <div class="link" onclick="window.open('https://instagram.com', '_blank')">
+                            <i class="fa-brands fa-instagram link-icon"></i>
+                            <p class="link-label">Instagram Adresim</p>
+                        </div>
+                        <div class="link" onclick="window.open('https://linkedin.com', '_blank')">
+                            <i class="fa-brands fa-linkedin"></i>
+                            <p class="link-label">LinkedIn Hesabım</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <div class="tab-buttons full-width">
+                <button class="active">Kullanıcının Gönderileri</button>
+            </div>
+
+            <div class="tab-content active">
+                @foreach (var blog in Model.OwnPosts)
+                {
+                     <div class="profile-post" onclick="location.href='@Url.Action("Detail", "Blog", new { id = blog.Id })'" style="cursor: pointer;">
+        <img src="@blog.ImageUrl" alt="@blog.Title" />
+        <div class="bottom">
+            <h1>@blog.Title</h1>
+            <p>@(blog.Content.Length > 100 ? blog.Content.Substring(0, 100) + "..." : blog.Content)</p>
+            <div class="card-footer">
+                <div class="options">
+                    <a asp-action="ToggleLike" asp-controller="Blog" asp-route-id="@blog.Id" title="Beğen" onclick="event.stopPropagation();">
+                        <i class="fa-solid fa-heart"></i>
+                    </a>
+                    <a asp-action="Repost" asp-controller="Blog" asp-route-id="@blog.Id" title="Repostla" onclick="event.stopPropagation();">
+                        <i class="fas fa-retweet"></i>
+                    </a>
+                </div>
+                <div class="authorAndDate">
+                    <span>@blog.User?.Username</span>
+                    <span>@blog.CreatedAt.ToShortDateString()</span>
+                </div>
+            </div>
+        </div>
+    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/profile.js"></script>
+    <script src="~/js/toggleLike.js"></script>
+
+</body>
+
+</html>

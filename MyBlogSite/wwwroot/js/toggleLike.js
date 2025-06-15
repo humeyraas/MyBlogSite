@@ -5,7 +5,7 @@
             'Content-Type': 'application/json'
             // Eğer token gerekiyorsa buraya ekle
         },
-        body: JSON.stringify({ blogId })
+        body: JSON.stringify({ blogId } )
     })
         .then(response => {
             if (!response.ok) {

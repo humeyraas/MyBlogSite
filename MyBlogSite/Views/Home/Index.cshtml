@@ -42,7 +42,11 @@
                             }
                         </p>
                         <div class="authorAndDate">
-                            <span>@blog.User?.Username</span>
+                            <a asp-controller="UserProfile" asp-action="Index" asp-route-id="@blog.UserId" style="text-decoration: none; color: inherit;">
+                                <span>@blog.User?.Username</span>
+                            </a>
+
+
                             <span>@blog.CreatedAt.ToShortDateString()</span>
                         </div>
                         <div class="blog-actions">

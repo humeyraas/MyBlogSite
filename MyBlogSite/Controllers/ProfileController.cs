@@ -28,12 +28,14 @@ public class ProfileController : Controller
         var likedPosts = await _context.BlogLikes
             .Where(l => l.UserId == user.Id)
             .Include(l => l.Blog)
+            .ThenInclude(b => b.User)
             .Select(l => l.Blog)
             .ToListAsync();
 
         var repostedPosts = await _context.Reposts
             .Where(r => r.UserId == user.Id)
             .Include(r => r.Blog)
+            .ThenInclude(b => b.User)
             .Select(r => r.Blog)
             .ToListAsync();
 
